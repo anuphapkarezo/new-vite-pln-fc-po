@@ -83,6 +83,39 @@ const columns = [
     },
   },
   {
+    field: "qty_fc_4wk",
+    headerName: "FC (Next 4wk)",
+    width: 130,
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "bold-header",
+    valueFormatter: (params) => {
+      // Attempt to convert the string to a number
+      const numericValue = parseFloat(params.value.replace(/[^0-9.-]+/g, ""));
+
+      // Check if the value is a valid number
+      if (!isNaN(numericValue)) {
+        const formattedValue = new Intl.NumberFormat("en-US").format(
+          numericValue
+        );
+        return formattedValue;
+      } else {
+        return "Invalid Data"; // or any default value or an empty string
+      }
+    },
+    sortComparator: (a, b, cellParamsA, cellParamsB) => {
+      const numA = parseFloat(cellParamsA.value.replace(/[^0-9.-]+/g, ""));
+      const numB = parseFloat(cellParamsB.value.replace(/[^0-9.-]+/g, ""));
+
+      // Check if both values are valid numbers
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      } else {
+        return 0; // or handle the case when the comparison is not possible
+      }
+    },
+  },
+  {
     field: "po_cover_fc",
     headerName: "PO cover FC (week)",
     width: 150,
@@ -434,7 +467,114 @@ const columns = [
         return 0; // Change this to '0.00%' or any default value with percentage sign
       }
     },
+  },{
+    field: "qty_feedback_sale",
+    headerName: "PO_Bal - FC (Next 4wk)",
+    width: 200,
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "bold-header",
+    valueFormatter: (params) => {
+      // Attempt to convert the string to a number
+      const numericValue = Number(params.value);
+  
+      // Check if the value is a valid number and an integer
+      if (!isNaN(numericValue) && Number.isInteger(numericValue)) {
+        const formattedValue = new Intl.NumberFormat("en-US").format(numericValue);
+        return formattedValue;
+      } else {
+        return "Invalid Data"; // or any default value or an empty string
+      }
+    },
+    sortComparator: (a, b, cellParamsA, cellParamsB) => {
+      const numA = Number(cellParamsA.value);
+      const numB = Number(cellParamsB.value);
+  
+      // Check if both values are valid numbers
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      } else {
+        return 0; // or handle the case when the comparison is not possible
+      }
+    },
+    // renderCell: (params) => (
+    //   <div>
+    //     {params.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //     {params.row.qty_feedback_sale < 0 ? (
+    //       <GppBadIcon style={{ color: "red" }} />
+    //     ) : (
+    //       <GppGoodIcon style={{ color: "green" }} />
+    //     )}
+    //   </div>
+    // ),
+    // valueFormatter: (params) => {
+    //   // Attempt to convert the string to a number
+    //   const numericValue = parseFloat(params.value.replace(/[^0-9.-]+/g, ""));
+
+    //   // Check if the value is a valid number
+    //   if (!isNaN(numericValue)) {
+    //     const formattedValue = new Intl.NumberFormat("en-US").format(
+    //       numericValue
+    //     );
+    
+    //     return formattedValue;
+    //   } else {
+    //     return "Invalid Data"; // or any default value or an empty string
+    //   }
+    // },
+    // sortComparator: (a, b, cellParamsA, cellParamsB) => {
+    //   const numA = parseFloat(cellParamsA.value.replace(/[^0-9.-]+/g, ""));
+    //   const numB = parseFloat(cellParamsB.value.replace(/[^0-9.-]+/g, ""));
+
+    //   // Check if both values are valid numbers
+    //   if (!isNaN(numA) && !isNaN(numB)) {
+    //     return numA - numB;
+    //   } else {
+    //     return 0; // or handle the case when the comparison is not possible
+    //   }
+    // },
+  },{
+    field: "qty_control_loading",
+    headerName: "(FG+FG Un+WIP Yield+WIP pending) - FC (Next 4wk)",
+    width: 200,
+    headerAlign: "center",
+    align: "center",
+    headerClassName: 'bold-header',
+    // renderCell: (params) => (
+    //   <div>
+    //     {params.value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //     {params.row.qty_feedback_sale < 0 ? (
+    //       <GppBadIcon style={{ color: "red" }} />
+    //     ) : (
+    //       <GppGoodIcon style={{ color: "green" }} />
+    //     )}
+    //   </div>
+    // ),
+    valueFormatter: (params) => {
+      // Attempt to convert the string to a number
+      const numericValue = Number(params.value);
+  
+      // Check if the value is a valid number and an integer
+      if (!isNaN(numericValue) && Number.isInteger(numericValue)) {
+        const formattedValue = new Intl.NumberFormat("en-US").format(numericValue);
+        return formattedValue;
+      } else {
+        return "Invalid Data"; // or any default value or an empty string
+      }
+    },
+    sortComparator: (a, b, cellParamsA, cellParamsB) => {
+      const numA = Number(cellParamsA.value);
+      const numB = Number(cellParamsB.value);
+  
+      // Check if both values are valid numbers
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      } else {
+        return 0; // or handle the case when the comparison is not possible
+      }
+    },
   },
+  
 ];
 
 export default function Planning_Forecast_AnalysisPage({ onSearch }) {
