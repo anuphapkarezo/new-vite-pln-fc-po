@@ -65,7 +65,7 @@ const columns = [
   },
   {
     field: "fc",
-    headerName: "FC",
+    headerName: "FC (pcs)",
     width: 100,
     headerAlign: "center",
     align: "center",
@@ -84,8 +84,8 @@ const columns = [
   },
   {
     field: "qty_fc_4wk",
-    headerName: "FC (Next 4wk)",
-    width: 130,
+    headerName: "FC (Next 4wk) || (pcs)",
+    width: 160,
     headerAlign: "center",
     align: "center",
     headerClassName: "bold-header",
@@ -125,7 +125,7 @@ const columns = [
   },
   {
     field: "fc_accuracy",
-    headerName: "FC Accuracy",
+    headerName: "FC Stablelability",
     width: 150,
     headerAlign: "center",
     align: "right",
@@ -156,7 +156,7 @@ const columns = [
   },
   {
     field: "booking_plan",
-    headerName: "Booking Plan",
+    headerName: "Booking Plan (pcs)",
     width: 150,
     headerAlign: "center",
     align: "center",
@@ -208,7 +208,7 @@ const columns = [
   },
   {
     field: "wip",
-    headerName: "WIP",
+    headerName: "WIP (pcs)",
     width: 95,
     headerAlign: "center",
     align: "center",
@@ -241,8 +241,8 @@ const columns = [
   },
   {
     field: "wip_yield",
-    headerName: "WIP Yield",
-    width: 95,
+    headerName: "WIP Yield (pcs)",
+    width: 115,
     headerAlign: "center",
     align: "center",
     headerClassName: "bold-header",
@@ -305,7 +305,7 @@ const columns = [
   },
   {
     field: "fg",
-    headerName: "FG",
+    headerName: "FG (pcs)",
     width: 95,
     headerAlign: "center",
     align: "center",
@@ -338,8 +338,8 @@ const columns = [
   },
   {
     field: "fg_unm",
-    headerName: "FG Unmovement",
-    width: 140,
+    headerName: "FG Unmovement (pcs)",
+    width: 170,
     headerAlign: "center",
     align: "center",
     headerClassName: "bold-header",
@@ -469,8 +469,8 @@ const columns = [
     },
   },{
     field: "qty_feedback_sale",
-    headerName: "PO_Bal - FC (Next 4wk)",
-    width: 200,
+    headerName: "PO_Bal - FC (Next 4wk) || (pcs)",
+    width: 220,
     headerAlign: "center",
     align: "center",
     headerClassName: "bold-header",
@@ -535,8 +535,8 @@ const columns = [
     // },
   },{
     field: "qty_control_loading",
-    headerName: "(FG+FG Un+WIP Yield+WIP pending) - FC (Next 4wk)",
-    width: 200,
+    headerName: "(FG+FG Un+WIP Yield+WIP pending) - FC (Next 4wk) (pcs)",
+    width: 220,
     headerAlign: "center",
     align: "center",
     headerClassName: 'bold-header',
@@ -691,9 +691,12 @@ export default function Planning_Forecast_AnalysisPage({ onSearch }) {
                 />
               </Box>
             </Box>
+            
           )}
         </div>
+        
       </Box>
+      
     </>
   );
 }

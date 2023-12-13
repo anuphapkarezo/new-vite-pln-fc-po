@@ -110,6 +110,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
   const [selectedFgunDet, setSelectedFgunDet] = useState(null);
   const [selectedWipPenDet, setSelectedWipPenDet] = useState(null);
   const [selectedWipDet, setSelectedWipDet] = useState(null);
+  const [selectedWipBookingDet, setSelectedWipBookingDet] = useState(null);
 
   // For Fetch Data //
   const [wk_no, setWeekNumbers] = useState([]);
@@ -131,6 +132,8 @@ export default function Planning_Forecast_POPage({ onSearch }) {
   const [FgUnmovement, setFgUnmovement] = useState([]);
   const [fcAccuracy, setfcAccuracy] = useState([]);
   const [fcLatest, setfcLatest] = useState([]);
+  const [WipBooking, setWipBooking] = useState([]);
+
 
   // const [FgUnmovementDet, setFgUnmovementDet] = useState([]);
 
@@ -149,6 +152,10 @@ export default function Planning_Forecast_POPage({ onSearch }) {
   //
   const [isModalOpen_WipDet, setIsModalOpen_WipDet] = useState(false);
   const [WipDetails, setWipDetails] = useState([]);
+  
+  const [isModalOpen_WipBookingDet, setIsModalOpen_WipBookingDet] = useState(false);
+  const [WipBookingDetail, setWipBookingDetail] = useState([]);
+
 
   function formatNumberWithCommas(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -606,6 +613,53 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     }
   };
 
+  const fetchData_wip_booking = async ( 
+    prd_name = selectedProduct,
+    prd_series = selectedSeries
+  ) => {
+    try {
+      // setIsLoading(true);
+      const response = await axios.get(
+        `http://10.17.66.242:3001/api/smart_planning/filter-data-wip-booking-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+      );
+      const data = await response.data;
+      const WipBookingData = {};
+      data.forEach((item) => {
+        WipBookingData[item.wk] = item.wip_booking;
+      });
+      // console.log(WipBookingData);
+      setWipBooking(WipBookingData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("An error occurred while fetching data accuracy");
+    } finally {
+      setIsLoading(false); // Set isLoading back to false when fetch is complete
+    }
+  };
+
+  const fetchData_wip_booking_details = async (week) => {
+    try {
+      // setIsLoading(true);
+      const response = await axios.get(
+        `http://10.17.66.242:3001/api/smart_planning/filter-data-wip-booking-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}&week=${week}`
+      );
+      const data = await response.data;
+      // Add a unique id property to each row
+      const rowsWithId = data.map((row, index) => ({
+        ...row,
+        id: index, // You can use a better unique identifier here if available
+      }));
+      // setWipPenDetails(rowsWithId);
+      console.log("Details >" , rowsWithId);
+      setWipBookingDetail(rowsWithId);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("An error occurred while fetching data accuracy");
+    } finally {
+      setIsLoading(false); // Set isLoading back to false when fetch is complete
+    }
+  };
+
   useEffect(() => {
     //ต้องมี userEffect เพื่อให้รับค่าจาก อีก component ได้ต่อเนื่อง realtime หากไม่มีจะต้องกดปุ่ม 2 รอบ
     fetchData_week();
@@ -622,6 +676,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     fetchData_WipDetails();
     fetchData_fc_accuracy();
     fetchData_fc_latest();
+    fetchData_wip_booking();
 
     console.log("Product", selectedProduct);
     if (selectedProduct === null) {
@@ -801,6 +856,30 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     { field: "std_day", headerName: "Remain to WH(Days)", width: 150 },
   ];
 
+  ////////////// Modal Wip booking plan by Details //////////////////////////////////
+  const openModal_WipBookingDetails = (WipBookingDetValue) => {
+    if (WipBookingDetValue > 0) {
+      setSelectedWipBookingDet(WipBookingDetValue);
+      setIsModalOpen_WipBookingDet(true);
+    }
+  };
+  const closeModal_WipBookingDetails = () => {
+    setSelectedWipBookingDet(null);
+    setIsModalOpen_WipBookingDet(false);
+  };
+
+  const columns_WipBookingDetails = [
+    { field: "prd_name", headerName: "Product Name", width: 170 },
+    { field: "prd_series", headerName: "Product Series", width: 150 },
+    { field: "lot", headerName: "Lot No.", width: 160 },
+    { field: "factory", headerName: "Factory", width: 120 },
+    { field: "unit", headerName: "Unit", width: 120 },
+    { field: "process", headerName: "Process", width: 120 },
+    { field: "ro_rev", headerName: "Revision", width: 120 },
+    { field: "qty_wip_detail", headerName: "QTY WIP Booking", width: 155 },
+    { field: "lot_sch_effdat", headerName: "Eff. Date", width: 110 },
+  ];
+
   let result_1 = sumQtyBal;
   let result_2,
     result_3,
@@ -825,6 +904,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
                 onSearch={(queryParams) => {
                   setSelectedProduct(queryParams.prd_name);
                   setSelectedSeries(queryParams.prd_series);
+                  setSelectedWeek(queryParams.week);
                   // fetchData_PDshow();
                 }}
               />
@@ -898,7 +978,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
                           textAlign: "center",
                           backgroundColor: "#AED2FF",
                           height: "40px",
-                          width: "110px",
+                          width: "120px",
                         }}
                       >
                         Week
@@ -1202,7 +1282,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
                           height: "30px",
                         }}
                       >
-                        FC_Accuracy(%) :
+                        FC_Stablelability(%) :
                       </td>
                       {wk_no.map((week, weekIndex) => {
                         const fcAccuracyValue = fcAccuracy[week];
@@ -1328,6 +1408,58 @@ export default function Planning_Forecast_POPage({ onSearch }) {
                             : "0"}
                         </td>
                       ))}
+                    </tr>
+                    <tr>
+                      {/* <td></td> */}
+                      <td
+                        style={{
+                          color: "blue",
+                          fontWeight: "bold",
+                          textAlign: "right",
+                          backgroundColor: "#E4F1FF",
+                          height: "30px",
+                        }}
+                      >
+                        WIP Booking plan :
+                      </td>
+                      {wk_no.map((week, weekIndex) => {
+                        const WipBookingValue = WipBooking[week];
+                        return (
+                          <td
+                            key={weekIndex}
+                            style={{
+                              cursor:
+                                WipBookingValue > 0
+                                  ? "pointer"
+                                  : "default",
+                              textDecoration:
+                                WipBookingValue > 0
+                                  ? "underline"
+                                  : "none",
+                              textAlign: "center",
+                              backgroundColor: "#E4F1FF",
+                              color: WipBookingValue > 0 ? "#0E21A0" : "black",
+                              fontWeight: WipBookingValue > 0 ? "bold" : "normal",
+                              fontSize: WipBookingValue > 0 ? "12px" : "normal",
+                            }}
+                            onClick={() => {
+                              if (WipBookingValue > 0) {
+                                fetchData_wip_booking_details(week);
+                                
+                                openModal_WipBookingDetails(WipBookingValue);
+                                console.log("WEEK >" , week);
+                              }
+                            }} // Open modal on click
+                          >
+                            {WipBookingValue !== undefined
+                              ? formatNumberWithCommas(WipBookingValue)
+                              : "0"}
+                            {/* {recValue !== undefined ? (recValue !== 0 ? recValue : "--") : "--"} */}
+                            
+                          </td>
+                        );
+                        
+                      })}
                     </tr>
                     <tr>
                       {/* <td></td> */}
@@ -1572,6 +1704,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
                         );
                       })}
                     </tr>
+                    
                   </tbody>
                 </table>
               )}
@@ -1883,6 +2016,70 @@ export default function Planning_Forecast_POPage({ onSearch }) {
                           qty_pending: formatNumberWithCommas(row.qty_pending), // Format the qty_pending field
                         }))}
                         columns={columns_WipPenDetails}
+                        // loading={!FGDetails.length}
+                        pageSize={10}
+                        checkboxSelection
+                        // autoPageSize
+                        style={{
+                          minHeight: "400px",
+                          border: "1px solid black",
+                          backgroundColor: "#E4F1FF",
+                        }}
+                        slots={{ toolbar: CustomToolbar }}
+                      />
+                    </div>
+                  </Box>
+                </Modal>
+              )}
+
+              {isModalOpen_WipBookingDet && (
+                <Modal
+                  open={isModalOpen_WipBookingDet}
+                  onClose={closeModal_WipBookingDetails}
+                  aria-labelledby="child-modal-title"
+                  aria-describedby="child-modal-description"
+                >
+                  <Box
+                    sx={{
+                      ...style_Modal,
+                      width: 1280,
+                      height: 800,
+                      backgroundColor: "#AED2FF",
+                    }}
+                  >
+                    {/* <h3 style={{textAlign: 'center'}}>PO Balance by Details</h3> */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "10px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          fontSize: "20px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <label htmlFor="">WIP Booking plan by Details</label>
+                      </div>
+                      <div>
+                        <IconButton onClick={closeModal_WipBookingDetails}>
+                          <CloseIcon />
+                        </IconButton>
+                      </div>
+                    </div>
+                    <div style={{ height: 680, width: "100%" }}>
+                      <DataGrid
+                        // rows={WipPenDetails}
+                        rows={WipBookingDetail.map((row) => ({
+                          ...row,
+                          qty_wip_detail: formatNumberWithCommas(row.qty_wip_detail), // Format the qty_pending field
+                        }))}
+                        columns={columns_WipBookingDetails}
                         // loading={!FGDetails.length}
                         pageSize={10}
                         checkboxSelection
