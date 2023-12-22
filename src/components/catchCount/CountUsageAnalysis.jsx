@@ -43,7 +43,7 @@ export default function countUsagePO() {
   if (userLoggedin !== null) {
     axios
       .get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-get-user?user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-get-user?user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}`
       )
       .then((res) => {
         //**********Create condition when user is null********** */
@@ -77,7 +77,7 @@ export default function countUsagePO() {
           // Update data by calling the update API
           axios
             .get(
-              `http://10.17.66.242:3001/api/smart_planning/filter-save-user?check=update&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
+              `http://10.17.100.115:3001/api/smart_planning/filter-save-user?check=update&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
             )
             .then((res) => {
               console.log(res.data);
@@ -89,7 +89,7 @@ export default function countUsagePO() {
           //**********else = null -> Insert data********** */
           axios
             .get(
-              `http://10.17.66.242:3001/api/smart_planning/filter-save-user?check=insert&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=1`
+              `http://10.17.100.115:3001/api/smart_planning/filter-save-user?check=insert&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=1`
             )
             .then((res) => {
               console.log(res.data);
@@ -130,7 +130,7 @@ export default function countUsagePO() {
           ) {
             axios
               .get(
-                `http://10.17.66.242:3001/api/smart_planning/filter-save-user?check=insert&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
+                `http://10.17.100.115:3001/api/smart_planning/filter-save-user?check=insert&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
               )
               .then((res) => {
                 console.log(res.data);
@@ -139,7 +139,7 @@ export default function countUsagePO() {
           } else {
             axios
               .get(
-                `http://10.17.66.242:3001/api/smart_planning/filter-save-user?check=update&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
+                `http://10.17.100.115:3001/api/smart_planning/filter-save-user?check=update&user_login=${userLoggedin}&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
               )
               .then((res) => {
                 console.log(res.data);
@@ -157,7 +157,7 @@ export default function countUsagePO() {
     // Check if the guest user exists by calling the get API
     axios
       .get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-get-user?user_login=guest&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-get-user?user_login=guest&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}`
       )
       .then((res) => {
         // Get user_login from the response
@@ -193,7 +193,7 @@ export default function countUsagePO() {
           ) {
             axios
               .get(
-                `http://10.17.66.242:3001/api/smart_planning/filter-save-user?check=insert&user_login=guest&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
+                `http://10.17.100.115:3001/api/smart_planning/filter-save-user?check=insert&user_login=guest&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
               )
               .then((res) => {
                 console.log(res.data);
@@ -202,7 +202,7 @@ export default function countUsagePO() {
           } else {
             axios
               .get(
-                `http://10.17.66.242:3001/api/smart_planning/filter-save-user?check=update&user_login=guest&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
+                `http://10.17.100.115:3001/api/smart_planning/filter-save-user?check=update&user_login=guest&system_name=${systemName}&menu_name=${menuName}&usage_date=${usageDate}&usage_count=${counted}`
               )
               .then((res) => {
                 console.log(res.data);

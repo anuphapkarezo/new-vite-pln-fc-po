@@ -164,7 +164,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
   const fetchData_week = async () => {
     try {
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/get-week`
+        `http://10.17.100.115:3001/api/smart_planning/get-week`
       );
       // const data = await response.data;
       // const data = await response.json();
@@ -193,7 +193,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fc-by-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fc-by-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -217,7 +217,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-po-all-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-po-all-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -264,7 +264,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
   // ) => {
   // try {
   //     // setIsLoading(true);
-  //     const response = await fetch(`http://10.17.66.242:3001/api/smart_planning/filter-po-bal-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`);
+  //     const response = await fetch(`http://10.17.100.115:3001/api/smart_planning/filter-po-bal-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`);
   //     if (!response.ok) {
   //         throw new Error('Network response was not OK');
   //     }
@@ -288,7 +288,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-actual-ship-summary-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-actual-ship-summary-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -315,7 +315,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-show-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-show-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -337,7 +337,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
   ) => {
     try {
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fc-diff-prev-curr?prd_series=${prd_series}&prd_name=${prd_name}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fc-diff-prev-curr?prd_series=${prd_series}&prd_name=${prd_name}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -365,7 +365,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       //   setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-po-bal-detail-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-po-bal-detail-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       //   if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -390,7 +390,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       //   setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-wip-pending-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-wip-pending-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       //   if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -417,7 +417,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       //   setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fg-unmovement-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fg-unmovement-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       //   if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -445,7 +445,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fg-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fg-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -475,7 +475,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fg-unmovement-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fg-unmovement-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -503,7 +503,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-wip-pending-detail-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-wip-pending-detail-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -532,7 +532,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-wip-detail-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-wip-detail-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -562,7 +562,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fc-accuracy-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fc-accuracy-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -591,7 +591,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fc-latest-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fc-latest-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       // if (!response.ok) {
       //     throw new Error('Network response was not OK');
@@ -620,7 +620,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-data-wip-booking-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-data-wip-booking-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}`
       );
       const data = await response.data;
       const WipBookingData = {};
@@ -641,7 +641,7 @@ export default function Planning_Forecast_POPage({ onSearch }) {
     try {
       // setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-data-wip-booking-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}&week=${week}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-data-wip-booking-details-product-series?prd_series=${selectedSeries}&prd_name=${selectedProduct}&week=${week}`
       );
       const data = await response.data;
       // Add a unique id property to each row

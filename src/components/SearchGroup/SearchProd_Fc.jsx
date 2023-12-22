@@ -19,7 +19,7 @@ function SearchProd_Fc({ onSearch }) {
   const fetchProduct = async () => {
     try {
       const response = await fetch(
-        "http://10.17.66.242:3001/api/smart_planning/productlist"
+        "http://10.17.100.115:3001/api/smart_planning/productlist"
       );
       const dataProduct = response.data;
       setDistinctProduct(dataProduct);
@@ -30,7 +30,7 @@ function SearchProd_Fc({ onSearch }) {
 
   // const fetchSeries = async () => {
   //     try {
-  //       const response = await fetch("http://10.17.66.242:3001/api/serieslist");
+  //       const response = await fetch("http://10.17.100.115:3001/api/serieslist");
   //       const dataSeries = response.data;
   //       setDistinctSeries(dataSeries);
   //     } catch (error) {

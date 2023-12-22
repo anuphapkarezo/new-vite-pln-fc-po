@@ -19,13 +19,13 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
   const [distinctProduct, setDistinctProduct] = useState([]);
   const [distinctSeries, setDistinctSeries] = useState([]);
 
-  // http://10.17.66.242:3001/api/smart_planning/smart_planning/productlist
-  // http://10.17.66.242:3001/api/smart_planning/productlist
+  // http://10.17.100.115:3001/api/smart_planning/smart_planning/productlist
+  // http://10.17.100.115:3001/api/smart_planning/productlist
 
   const fetchProduct = async () => {
     try {
       const response = await axios.get(
-        "http://10.17.66.242:3001/api/smart_planning/productlist"
+        "http://10.17.100.115:3001/api/smart_planning/productlist"
       );
       const dataProduct = response.data;
       setDistinctProduct(dataProduct);
@@ -37,7 +37,7 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
   const fetchSeries = async () => {
     try {
       const response = await axios.get(
-        "http://10.17.66.242:3001/api/smart_planning/serieslist"
+        "http://10.17.100.115:3001/api/smart_planning/serieslist"
       );
       const dataSeries = response.data;
       setDistinctSeries(dataSeries);

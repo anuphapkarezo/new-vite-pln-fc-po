@@ -596,7 +596,7 @@ export default function Planning_Forecast_AnalysisPage({ onSearch }) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://10.17.66.242:3001/api/smart_planning/filter-fc-analysis`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fc-analysis`
       );
       const data = await response.data;
       // Add a unique id property to each row
