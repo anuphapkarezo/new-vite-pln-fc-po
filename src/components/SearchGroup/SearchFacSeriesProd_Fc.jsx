@@ -7,6 +7,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 //count usage function
 import countUsagedPO from "../catchCount/CountUsagePO.jsx";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 function SearchFacSeriesProd_Fc({ onSearch }) {
   const [error, setError] = useState(null);
@@ -14,6 +19,7 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
   //Set Dropdown List
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSeries, setSelectedSeries] = useState(null);
+  const [selectedWeek, setSelectedWeek] = useState(null);
 
   //Set Parameter from API
   const [distinctProduct, setDistinctProduct] = useState([]);
@@ -71,8 +77,14 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
       //   process: selectedProcess.process,
       prd_name: selectedProduct.prd_name,
       prd_series: selectedSeries.prd_series,
+      week: selectedWeek,
     };
+    console.log(queryParams);
     onSearch(queryParams); // Invoke the callback function with the selected values
+  };
+
+  const handleWeekChange = (event) => {
+    setSelectedWeek(event.target.value);
   };
 
   useEffect(() => {
@@ -171,6 +183,26 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
                             />
                         </div>
                     </Grid> */}
+          
+
+          <Grid item xs={2} md={2}>
+            <FormControl style={{ marginLeft: 30 , width: 250 , alignItems: "center"}}>
+              {/* <FormLabel id="demo-row-radio-buttons-group-label">Week</FormLabel> */}
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={selectedWeek} // Set value to sync with state variable
+                onChange={handleWeekChange} // Set onChange event handler
+                // defaultValue="24_wk"
+                // style={{marginLeft: 50 , width: 200}}
+              >
+                <FormControlLabel value="24_wk" control={<Radio />} label="24 Week" />
+                <FormControlLabel value="48_wk" control={<Radio />} label="48 Week" />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+
           <Grid item xs={2} md={2}>
             <Button
               variant="contained"
@@ -179,7 +211,7 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
                 width: "100px",
                 height: "35px",
                 marginTop: "2px",
-                marginLeft: "25px",
+                marginLeft: "55px",
               }}
               onClick={() => {
                 handleSearch();
@@ -189,6 +221,7 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
               Search
             </Button>
           </Grid>
+
         </Grid>
       </Box>
     </React.Fragment>

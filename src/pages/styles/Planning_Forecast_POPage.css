@@ -13,7 +13,9 @@
 
 .table-responsive_table-fullscreen {
   width: max-content;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
+  /* margin-top: 3px; */
+  margin-bottom: 10px;
   height: auto;
 }
 

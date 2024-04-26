@@ -47,7 +47,7 @@ const MenuList = () => {
                 <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
         </ListItem> */}
-      <ListItem
+      {/* <ListItem
         disablePadding
         sx={{ display: "block", color: "black" }}
         component={Link}
@@ -78,7 +78,41 @@ const MenuList = () => {
             sx={{ opacity: open ? 1 : 0 }}
           />
         </ListItemButton>
+      </ListItem> */}
+      
+      <ListItem
+        disablePadding
+        sx={{ display: "block", color: "black" }}
+        component={Link}
+        to="/pln_fc_po_new"
+      >
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+              color: "inherit", // Set initial color
+              "&:hover": {
+                color: "primary.main", // Change color on hover
+              },
+            }}
+          >
+            <WaterfallChartRoundedIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Forecast Vs PO (New)"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
       </ListItem>
+
       <ListItem
         // set onclick to send count data to the server
         onClick={countUsageAnalysis}

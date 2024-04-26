@@ -1,6 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Planning_Forecast_POPage from "./pages/Planning_Forecast_POPage";
+import Planning_Forecast_POPage_New from "./pages/Planning_Forecast_POPage_New";
 import Planning_Forecast_AnalysisPage from "./pages/Planning_Forecast_AnalysisPage";
 import Login from "./pages/Login";
 import Nav from "../src/components/Nav";
@@ -18,10 +19,8 @@ export default function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/home" element={<Nav />} />
           <Route path="/pln_fc_po" element={<Planning_Forecast_POPage />} />
-          <Route
-            path="/pln_fc_analysis"
-            element={<Planning_Forecast_AnalysisPage />}
-          />
+          <Route path="/pln_fc_po_new" element={<Planning_Forecast_POPage_New />} />
+          <Route path="/pln_fc_analysis" element={<Planning_Forecast_AnalysisPage />}/>
         </Route>
         {/* Protect */}
       </Routes>
