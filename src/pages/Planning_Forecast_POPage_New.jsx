@@ -831,7 +831,63 @@ export default function Planning_Forecast_POPage_New({ onSearch }) {
     result_9,
     result_10,
     result_11 = 0;
-  
+    
+  // const exportToCSV = () => {
+  //   const csvContent = "data:text/csv;charset=utf-8," +
+  //     "Week," + wk_no.join(",") + "\n" +
+  //     "Date," + monDate.join(",") + "\n" +
+  //               products.join(",");
+  //   const encodedUri = encodeURI(csvContent);
+  //   const link = document.createElement("a");
+  //   link.setAttribute("href", encodedUri);
+  //   link.setAttribute("download", "export.csv");
+  //   document.body.appendChild(link);
+  //   link.click();
+  // };
+
+  const exportToCSV = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const date = now.getDate().toString().padStart(2, '0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const formattedDateTime = `${year}${month}${date}${hours}${minutes}${seconds}`;
+
+    const csvContent = "data:text/csv;charset=utf-8," +
+      // Constructing CSV content
+      "Week," + wk_no.join(",") + "\n" +
+      "Date," + monDate.join(",") + "\n" +
+      Object.values(dataByProduct).map((productData) => {
+        const row = [
+          productData.pfd_period_no,
+          ...wk_no.map((week) => productData.qty_fc[week] !== undefined ? productData.qty_fc[week] : "0")
+        ];
+        return row.join(",");
+      }).join("\n") + "\n" +
+      "FC_Latest:," + wk_no.map(week => fcLatest[week] !== undefined ? fcLatest[week] : "0").join(",") + "\n" +
+      "FC_Fluctuation:," + wk_no.map(week => fcFlatData[week] !== undefined ? fcFlatData[week] : "0").join(",") + "\n" +
+      // "FC_Stablelability(%):," + wk_no.map(week => fcAccuracy[week] !== undefined ? fcAccuracy[week]: "0").join(",") + "\n" +
+      "FC_Stablelability(%):," + wk_no.map(week => fcAccuracy[week] !== undefined ? `${fcAccuracy[week]}%` : "0%").join(",") + "\n" +
+      "PO_REC:," + wk_no.map(week => po_rec[week] !== undefined ? po_rec[week]: "0").join(",") + "\n" +
+      "PO_DUE:," + wk_no.map(week => po_due[week] !== undefined ? po_due[week]: "0").join(",") + "\n" +
+      "Actual ship::," + wk_no.map(week => actualShips[week] !== undefined ? actualShips[week]: "0").join(",") + "\n" +
+      "WIP Booking plan:," + wk_no.map(week => WipBooking[week] !== undefined ? WipBooking[week]: "0").join(",") + "\n" +
+      "PO_BAL:," + wk_no.map((week, weekIndex) => weekIndex === IndexWeek ? sumQtyBal : "0").join(",") + "\n" +
+      "FG:," + wk_no.map((week, weekIndex) => weekIndex === IndexWeek ? sumQtyFg : "0").join(",") + "\n" +
+      "FG Unmovement:," + wk_no.map(week => FgUnmovement[week] !== undefined ? FgUnmovement[week]: "0").join(",") + "\n" +
+      "WIP:," + wk_no.map((week, weekIndex) => weekIndex === IndexWeek ? sumQtyWip : "0").join(",") + "\n" +
+      "WIP Pending (1.1:3.1):," + wk_no.map((week, weekIndex) => weekIndex === IndexWeek && wipPending && wipPending.length > 0 ? wipPending[0].qty_pending : "0").join(",");
+    
+    const fileName = `dataAnalysisForecast_${formattedDateTime}.csv`;
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+  };
 
   return (
     <>
@@ -859,10 +915,7 @@ export default function Planning_Forecast_POPage_New({ onSearch }) {
                       backgroundColor: 'green',
                       marginBottom: 10
                     }}
-                    onClick={() => {
-                      // handleSearch();
-                      // countUsagedPO();
-                    }}
+                    onClick={exportToCSV}
                   >
                     Export to Excel
                   </Button>
@@ -1664,7 +1717,6 @@ export default function Planning_Forecast_POPage_New({ onSearch }) {
                         );
                       })}
                     </tr>
-                    
                   </tbody>
                 </table>
               )}
