@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 // import ViewCompactSharpIcon from "@mui/icons-material/ViewCompactSharp";
 import WaterfallChartRoundedIcon from "@mui/icons-material/WaterfallChartRounded";
 import StackedLineChartOutlinedIcon from "@mui/icons-material/StackedLineChartOutlined";
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 // count usage function
 import countUsageAnalysis from "./catchCount/CountUsageAnalysis.jsx";
 
@@ -147,6 +149,73 @@ const MenuList = () => {
           />
         </ListItemButton>
       </ListItem>
+
+      <ListItem
+        disablePadding
+        sx={{ display: "block", color: "black" }}
+        component={Link}
+        to="/proc_std_lt_master"
+      >
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+              color: "inherit", // Set initial color
+              "&:hover": {
+                color: "primary.main", // Change color on hover
+              },
+            }}
+          >
+            <WatchLaterIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Master Leadtime"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem
+        disablePadding
+        sx={{ display: "block", color: "black" }}
+        component={Link}
+        to="/prod_rout_no_std_lt"
+      >
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+              color: "inherit", // Set initial color
+              "&:hover": {
+                color: "primary.main", // Change color on hover
+              },
+            }}
+          >
+            <ManageHistoryIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Routing Process no Leadtime"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
+      </ListItem>
+
     </List>
   );
 };
