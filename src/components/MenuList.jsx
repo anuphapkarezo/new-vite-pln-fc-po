@@ -210,7 +210,7 @@ const MenuList = () => {
             <ManageHistoryIcon />
           </ListItemIcon>
           <ListItemText
-            primary="Routing Process no Leadtime"
+            primary="Proessc no Leadtime"
             sx={{ opacity: open ? 1 : 0 }}
           />
         </ListItemButton>
