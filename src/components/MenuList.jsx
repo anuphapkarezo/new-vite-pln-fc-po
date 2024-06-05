@@ -20,8 +20,21 @@ import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 // count usage function
 import countUsageAnalysis from "./catchCount/CountUsageAnalysis.jsx";
+import MicrowaveIcon from '@mui/icons-material/Microwave';
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 
 const MenuList = () => {
+  //bind value user from localstorage
+  const userString = localStorage.getItem("userToken");
+  const userObject = JSON.parse(userString);
+  const userName = userObject?.user_name;
+  const userSurname = userObject?.user_surname;
+
+  const userGuest = localStorage.getItem("guestToken");
+  const userGuestObject = JSON.parse(userGuest);
+  const userGuestRole = userGuestObject?.user_role;
+  // console.log('userGuestRole' , userGuestRole);
+
   return (
     <List>
       {/* <ListItem disablePadding sx={{ display: 'block',color: 'black' }} component={Link} to="/">
@@ -149,6 +162,79 @@ const MenuList = () => {
           />
         </ListItemButton>
       </ListItem>
+
+      <ListItem
+        // set onclick to send count data to the server
+        onClick={countUsageAnalysis}
+        disablePadding
+        sx={{ display: "block", color: "black" }}
+        component={Link}
+        to="/pln_fc_time_cap"
+      >
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+              color: "inherit", // Set initial color
+              "&:hover": {
+                color: "primary.main", // Change color on hover
+              },
+            }}
+          >
+            <MicrowaveIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Forecast Time Capacity"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
+      </ListItem>
+
+
+      {userGuestRole !== 'Guest' && (
+        <ListItem
+          // set onclick to send count data to the server
+          onClick={countUsageAnalysis}
+          disablePadding
+          sx={{ display: "block", color: "black" }}
+          component={Link}
+          to="/pln_manage_mc_in_proc"
+        >
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+                color: "inherit", // Set initial color
+                "&:hover": {
+                  color: "primary.main", // Change color on hover
+                },
+              }}
+            >
+              <PrecisionManufacturingIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Manage Machine"
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+      )}
 
       <ListItem
         disablePadding
