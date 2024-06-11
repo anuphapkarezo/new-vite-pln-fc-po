@@ -84,7 +84,7 @@ export default function Planning_Forecast_time_Capacity_Chart({ onSearch }) {
           {distinctChart_data.map((graph, index) => (
             <div key={index} className="chart-item">
               {/* <h2>Graph No {graph[0].graph_no} - {graph[0].proc_grp_name}</h2> */}
-              <h4 style={{fontSize: 14}}>Group : {graph[0].proc_grp_name}</h4>
+              <h4 style={{fontSize: 13}}>Group : {graph[0].proc_grp_name} // (Total Machine : {graph[0].total_machine})</h4>
               <Chart
                 options={{
                   chart: {
@@ -124,7 +124,7 @@ export default function Planning_Forecast_time_Capacity_Chart({ onSearch }) {
                     },
                   },
                   title: {
-                    text: 'Forecast time & Capacity',
+                    text: 'Forecast time & Capacity (sec)',
                     align: 'center',
                     style: {
                       fontSize: '16px'
