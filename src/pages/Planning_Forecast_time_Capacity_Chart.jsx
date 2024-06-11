@@ -22,12 +22,13 @@ export default function Planning_Forecast_time_Capacity_Chart({ onSearch }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchChart_data = async () => {
+    // console.log('selectedGroupProcess' , selectedGroupProcess);
     try {
       const response = await axios.get(
-        `http://10.17.100.115:3001/api/smart_planning/filter-fc-time-mc-working-sec-chart?grp_proc=${selectedGroupProcess}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-fc-time-mc-working-sec-chart?grp_proc=${selectedGroupProcess}&factory=${selectedFactory}&unit=${selectedUnit}`
       );
       const dataFetch = await response.data;
-      console.log('dataFetch' , dataFetch);
+      // console.log('dataFetch' , dataFetch);
 
       // Organize data by graph_no
       const groupedData = dataFetch.reduce((acc, item) => {
@@ -35,7 +36,7 @@ export default function Planning_Forecast_time_Capacity_Chart({ onSearch }) {
         acc[item.graph_no].push(item);
         return acc;
       }, {});
-      console.log('Grouped Data:', groupedData); // Debugging: log grouped data
+      // console.log('Grouped Data:', groupedData); // Debugging: log grouped data
       setdistinctChart_data(Object.values(groupedData));
     } catch (error) {
       console.error("Error fetching data:", error);

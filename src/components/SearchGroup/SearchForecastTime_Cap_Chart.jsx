@@ -150,7 +150,7 @@ function SearchForecastTime_Cap_Chart({ onSearch }) {
             // backgroundColor: '#CAE6B2',
           }}
         >
-          Forecast time & Capacity level by process
+          Forecast time & Capacity level by process (Chart)
         </h5>
       </div>
       <Box maxWidth="xl" sx={{ width: "100%", height: 50 }}>
