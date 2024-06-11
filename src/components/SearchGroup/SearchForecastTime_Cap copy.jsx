@@ -13,14 +13,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-function SearchForecastTime_Cap({ onSearch }) {
+function SearchForecastTime_Cap_copy({ onSearch }) {
   const [error, setError] = useState(null);
 
   //Set Dropdown List
   const [selectedFC_Period, setSelectedFC_Period] = useState(null);
   const [SelectedFactory, setSelectedFactory] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
-  const [selectedGroupProcesses, setSelectedGroupProcesses] = useState([]);
+  const [selectedGroupProcess, setSelectedGroupProcess] = useState(null);
 
   //Set Parameter from API
   const [distinctFC_Period, setDistinctFC_Period] = useState([]);
@@ -56,7 +56,7 @@ function SearchForecastTime_Cap({ onSearch }) {
     // console.log('SelectedFactory >' , SelectedFactory);
     try {
       const response = await axios.get(
-        `http://10.17.100.115:3001/api/smart_planning/filter-unit-list?factory=${SelectedFactory?.factory}&period=${selectedFC_Period?.period_no}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-unit-list?factory=${SelectedFactory.factory}&period=${selectedFC_Period.period_no}`
       );
       const data = response.data;
       setDistinctUnit(data);
@@ -68,7 +68,7 @@ function SearchForecastTime_Cap({ onSearch }) {
   const fetchGroupProcess = async () => {
     try {
       const response = await axios.get(
-        `http://10.17.100.115:3001/api/smart_planning/filter-group-process-list?factory=${SelectedFactory?.factory}&unit=${selectedUnit?.unit}&period=${selectedFC_Period?.period_no}`
+        `http://10.17.100.115:3001/api/smart_planning/filter-group-process-list?factory=${SelectedFactory.factory}&unit=${selectedUnit.unit}&period=${selectedFC_Period.period_no}`
       );
       const data = response.data;
       setDistinctGroupProcess(data);
@@ -86,26 +86,26 @@ function SearchForecastTime_Cap({ onSearch }) {
     setSelectedFC_Period(newValue);
     // setSelectedFactory(null);
     // setSelectedUnit(null);
-    // setSelectedGroupProcesses([]);
+    // setSelectedGroupProcess(null);
   };
 
   const handleFactoryChange = (event, newValue) => {
     setSelectedFactory(newValue);
     setSelectedUnit(null);
-    setSelectedGroupProcesses([]);
+    setSelectedGroupProcess(null);
   };
 
   const handleUnitChange = (event, newValue) => {
     setSelectedUnit(newValue);
-    setSelectedGroupProcesses([]);
+    setSelectedGroupProcess(null);
   };
 
-  const handleGroupProcessChange = (event, newValues) => {
-    setSelectedGroupProcesses(newValues || []);
+  const handleGroupProcessChange = (event, newValue) => {
+    setSelectedGroupProcess(newValue);
   };
 
   const handleSearch = () => {
-    if (selectedFC_Period == null || SelectedFactory == null || selectedUnit == null || selectedGroupProcesses.length === 0) {
+    if (selectedFC_Period == null || SelectedFactory == null || selectedUnit == null || selectedGroupProcess == null) {
       // console.log('1');
     } else {
       // console.log('2');
@@ -113,11 +113,12 @@ function SearchForecastTime_Cap({ onSearch }) {
         fc_period: selectedFC_Period.period_no,
         factory: SelectedFactory.factory,
         unit: selectedUnit.unit,
-        group_processes: selectedGroupProcesses.map(gp => gp.group_process),
+        group_process: selectedGroupProcess.group_process,
       };
       console.log(queryParams);
       onSearch(queryParams); // Invoke the callback function with the selected values
     }
+    
   };
 
   useEffect(() => {
@@ -134,7 +135,7 @@ function SearchForecastTime_Cap({ onSearch }) {
     } else {
       fetchGroupProcess();
     }
-  }, [selectedFC_Period, SelectedFactory, selectedUnit]);
+  }, [selectedFC_Period , SelectedFactory , selectedUnit , selectedGroupProcess]);
 
   return (
     <React.Fragment>
@@ -175,7 +176,7 @@ function SearchForecastTime_Cap({ onSearch }) {
               />
             </div>
           </Grid>
-
+          
           <Grid item xs={2} md={2}>
             <div style={{ display: "grid", placeItems: "center" }}>
               <Autocomplete
@@ -230,9 +231,9 @@ function SearchForecastTime_Cap({ onSearch }) {
                 size="small"
                 options={distinctGroupProcess}
                 getOptionLabel={(option) => option && option.group_process}
-                value={selectedGroupProcesses}
+                value={selectedGroupProcess}
                 onChange={handleGroupProcessChange}
-                sx={{ width: 500 }}
+                sx={{ width: 215 }}
                 renderInput={(params) => (
                   <TextField {...params} label="Group process" />
                 )}
@@ -250,7 +251,7 @@ function SearchForecastTime_Cap({ onSearch }) {
               style={{
                 width: "150px",
                 height: "40px",
-                marginLeft: "300px",
+                marginLeft: "30px",
                 backgroundColor: '#40A578'
               }}
               onClick={() => {
@@ -267,4 +268,4 @@ function SearchForecastTime_Cap({ onSearch }) {
   );
 }
 
-export default SearchForecastTime_Cap;
+export default SearchForecastTime_Cap_copy;

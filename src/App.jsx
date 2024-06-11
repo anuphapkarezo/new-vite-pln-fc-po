@@ -4,6 +4,7 @@ import Planning_Forecast_POPage from "./pages/Planning_Forecast_POPage";
 import Planning_Forecast_POPage_New from "./pages/Planning_Forecast_POPage_New";
 import Planning_Forecast_AnalysisPage from "./pages/Planning_Forecast_AnalysisPage";
 import Planning_Forecast_time_Capacity from "./pages/Planning_Forecast_time_Capacity";
+import Planning_Forecast_time_Capacity_Chart from "./pages/Planning_Forecast_time_Capacity_Chart";
 import Planning_Manage_Machine_In_Process from "./pages/Planning_Manage_Machine_In_Process";
 import Process_STD_Leasdtime_Master from "./pages/Process_STD_Leasdtime_Master";
 import Product_Routing_No_STD_LT from "./pages/Product_Routing_No_STD_LT";
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/pln_fc_po_new" element={<Planning_Forecast_POPage_New />} />
           <Route path="/pln_fc_analysis" element={<Planning_Forecast_AnalysisPage />}/>
           <Route path="/pln_fc_time_cap" element={<Planning_Forecast_time_Capacity />}/>
+          <Route path="/pln_fc_time_cap_chart" element={<Planning_Forecast_time_Capacity_Chart />}/>
           <Route path="/pln_manage_mc_in_proc" element={<Planning_Manage_Machine_In_Process />}/>
           <Route path="/proc_std_lt_master" element={<Process_STD_Leasdtime_Master />}/>
           <Route path="/prod_rout_no_std_lt" element={<Product_Routing_No_STD_LT />}/>

@@ -18,6 +18,7 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [selectedGroupProcess, setSelectedGroupProcess] = useState(null);
   const [selectedRowData, setSelectedRowData] = useState(null);
+  const [selectedRowData_Grp, setSelectedRowData_Grp] = useState(null);
 
   const [error, setError] = useState(null);
   const [Week_no, setWeek_no] = useState([]);
@@ -26,11 +27,13 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
 
   const [distinctForecast, setdistinctForecast] = useState([]);
   const [distinctMachine, setdistinctMachine] = useState([]);
+  const [distinctProcess, setdistinctProcess] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [isModalOpen_Level, setIsModalOpen_Level] = useState(false);
   const [isModalOpen_Machine, setIsModalOpen_Machine] = useState(false);
+  const [isModalOpen_GroupProcess, setIsModalOpen_GroupProcess] = useState(false);
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({});
 
@@ -103,6 +106,31 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
     }
   };
 
+  const fetchProcess_List = async () => {
+    try {
+      if (!selectedRowData_Grp) {
+        // Handle the case where selectedRowData is null
+        console.error("Error fetching data: selectedRowData is null");
+        return;
+      }
+      const response = await axios.get(
+        `http://10.17.100.115:3001/api/smart_planning/filter-process-list-by-group?grp_proc=${selectedRowData_Grp.GroupProcess}`
+      );
+      const dataFetch = await response.data;
+      const rowsWithId = dataFetch.map((row, index) => ({
+          ...row,
+          id: index, // You can use a better unique identifier here if available
+      }));
+      setdistinctProcess(rowsWithId);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // setError('An error occurred while fetching data week');
+      setError(`An error occurred while fetching data week: ${error.message}`);
+    } finally {
+      setIsLoading(false); // Set isLoading back to false when fetch is complete
+    }
+  };
+
   useEffect(() => {
     fetchWeekNo_Mondate_WorkingDay();
     fetchForecast_Time();
@@ -114,6 +142,12 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
     }
   }, [selectedRowData]);
 
+  useEffect(() => {
+    if (selectedRowData_Grp != null) {
+      fetchProcess_List();
+    }
+  }, [selectedRowData_Grp]);
+  
   const combineRows = (distinctForecast) => {
     const combinedData = {};
   
@@ -158,6 +192,13 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
     setIsModalOpen_Machine(false);
   };
 
+  const openModal_ProcessList = () => {
+    setIsModalOpen_GroupProcess(true);
+  };
+  const closeModal_ProcessList = () => {
+    setIsModalOpen_GroupProcess(false);
+  };
+
   const style_Modal = {
     position: "absolute",
     top: "50%",
@@ -184,6 +225,13 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
     },
     { field: 'update_date', headerName: 'Update Date', width: 160 , headerAlign: 'center' , headerClassName: 'bold-header-cap' , align: 'left'},
     { field: 'update_by', headerName: 'Update By', width: 160 , headerAlign: 'center' , headerClassName: 'bold-header-cap' , align: 'left'},
+  ]
+  
+  const columns_Process = [
+    { field: 'factory_desc', headerName: 'Factory', width: 120 , headerAlign: 'center' , headerClassName: 'bold-header-cap' , align: 'center'},
+    { field: 'unit_desc', headerName: 'Unit', width: 120 , headerAlign: 'center' , headerClassName: 'bold-header-cap' , align: 'center'},
+    { field: 'group_name', headerName: 'Group Process', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-cap' , align: 'left'},
+    { field: 'proc_disp', headerName: 'Process', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-cap' , align: 'left'},
   ]
 
   const exportToCSV = () => {
@@ -244,7 +292,7 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                   setSelectedFC_Period(queryParams.fc_period);
                   setSelectedFactory(queryParams.factory);
                   setSelectedUnit(queryParams.unit);
-                  setSelectedGroupProcess(queryParams.group_process);
+                  setSelectedGroupProcess(queryParams.group_processes);
                 }}
               />
             </div>
@@ -258,15 +306,16 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                     backgroundColor: 'green',
                     // marginBottom: 10 , 
                     marginTop: 10 , 
-                    marginLeft: 460
+                    marginLeft: 480
                   }}
                   onClick={exportToCSV}
                 >
                   Export to CSV
                 </Button>
             </div>
-            <div
+            <div 
               className="table-responsive_table-fullscreen"
+              // style={{ overflowY: "auto", maxHeight: "650px" }}
               // style={{ height: 800, width: 1770, marginTop: "5px" }}
             >
               {isLoading ? ( // Render the loading indicator if isLoading is true
@@ -364,7 +413,7 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                           <th
                             key={index}
                             style={{
-                              backgroundColor: "#A1DD70",
+                              backgroundColor: index === 0 || index === 1 || index === 2 ? "#DDDDDD" : '#A1DD70' ,
                               textAlign: "center",
                               width: "62px",
                             }}
@@ -442,7 +491,8 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                           <th
                             key={index}
                             style={{
-                              backgroundColor: "#A1DD70",
+                              // backgroundColor: "#A1DD70",
+                              backgroundColor: index === 0 || index === 1 || index === 2 ? "#DDDDDD" : '#A1DD70' ,
                               textAlign: "center",
                               width: "62px",
                             }}
@@ -525,7 +575,8 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                           <th
                             key={index}
                             style={{
-                              backgroundColor: "#A1DD70",
+                              // backgroundColor: "#A1DD70",
+                              backgroundColor: index === 0 || index === 1 || index === 2 ? "#DDDDDD" : '#A1DD70' ,
                               textAlign: "center",
                               width: "62px",
                             }}
@@ -542,14 +593,27 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                         <td style={{ textAlign: 'center' }}>{row.period_no}</td>
                         <td style={{ textAlign: 'center' }}>{row.factory}</td>
                         <td style={{ textAlign: 'center' }}>{row.unit}</td>
-                        <td style={{ paddingLeft: 5 }}>{row.proc_grp_name}</td>
+                        <td style={{ paddingLeft: 5 , 
+                                      cursor:'pointer' , 
+                                      color: 'blue' , 
+                                      textDecoration:' underline'}}
+                                      onClick={() => {
+                                        setSelectedRowData_Grp({
+                                          FC_Period: row.period_no,
+                                          Factory: row.factory,
+                                          Unit: row.unit,
+                                          GroupProcess: row.proc_grp_name
+                                        });
+                                        openModal_ProcessList();
+                                      }}
+                                      >{row.proc_grp_name}</td>
                         <td style={{ paddingLeft: 5 , 
                                       cursor:'pointer' , 
                                       color: 'blue' , 
                                       textDecoration:' underline'}}
                                       onClick={() => {
                                         openModal_LevelDef();
-                                    }}>{row.level_no}
+                                  }}>{row.level_no}
                         </td>
                         <td style={{ textAlign: 'center' , 
                                       cursor: row.total_machine > 0 ? 'pointer' : 'default' , 
@@ -564,8 +628,7 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                                         });
                                         openModal_MachineList();
                                       }}
-                                      >
-                            {row.total_machine ?? ""}
+                                      >{row.total_machine ?? ""}
                         </td>
                         {Week_no.map((week, index) => (
                           <td key={index} style={{ textAlign: 'center' }}>
@@ -685,7 +748,7 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                               Working days and no overtime. (Monday - Friday)
                             </th>
                             <th style={{textAlign: "left", paddingLeft: 10 , backgroundColor: 'white' , border: '1px solid black'}}>
-                              7.75 Hour x 2 Shift = 16 Hours
+                              7.75 Hour x 2 Shift = 15.5 Hours
                             </th>
                             <th style={{textAlign: "right", paddingRight: 10 , backgroundColor: '#ACD793' , border: '1px solid black'}}>
                               15.5
@@ -812,6 +875,77 @@ export default function Planning_Forecast_time_Capacity({ onSearch }) {
                           // },
                           '& .MuiDataGrid-footerContainer': {
                             // backgroundColor: 'lightyellow', // Change to desired color
+                          },
+                        }}
+                      />  
+                    </div>
+                  </Box>
+                </Modal>
+              )}
+
+              {/* Modal machine List */}
+              {isModalOpen_GroupProcess && (
+                <Modal
+                  open={isModalOpen_GroupProcess}
+                  onClose={closeModal_ProcessList}
+                  aria-labelledby="child-modal-title"
+                  aria-describedby="child-modal-description"
+                >
+                  <Box
+                    sx={{
+                      ...style_Modal,
+                      width: 565,
+                      height: 700,
+                      backgroundColor: "#CAE6B2",
+                    }}
+                  >
+                    {/* <h3 style={{textAlign: 'center'}}>PO Balance by Details</h3> */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: "10px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          fontSize: "20px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <label htmlFor="" style={{ fontSize: '30px' , 
+                                                    // paddingTop: 10 , 
+                                                    color: 'blue' , 
+                                                    textDecoration: 'underline'}}>
+                              Process List</label>
+                      </div>
+                      <div>
+                        <IconButton onClick={closeModal_ProcessList}>
+                          <CloseIcon style={{backgroundColor: '#FF7D29'}}/>
+                        </IconButton>
+                      </div>
+                    </div>
+                    <div style={{ height: 620, width: "100%" , backgroundColor: '#CAE6B2'}}>
+                      <DataGrid
+                        columns={columns_Process}
+                        rows={distinctProcess}
+                        slots={{ toolbar: GridToolbar }}
+                        filterModel={filterModel}
+                        onFilterModelChange={(newModel) => setFilterModel(newModel)}
+                        slotProps={{ toolbar: { showQuickFilter: true } }}
+                        columnVisibilityModel={columnVisibilityModel}
+                        // checkboxSelection
+                        onColumnVisibilityModelChange={(newModel) =>
+                          setColumnVisibilityModel(newModel)
+                        }
+                        sx={{
+                          '& .MuiDataGrid-row': {
+                            backgroundColor: 'lightyellow', // Change to desired color
+                          },
+                          '& .MuiDataGrid-footerContainer': {
                           },
                         }}
                       />  

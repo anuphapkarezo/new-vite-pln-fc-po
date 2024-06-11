@@ -13,7 +13,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-function SearchForecastTime_Cap({ onSearch }) {
+function SearchForecastTime_Cap_Chart({ onSearch }) {
   const [error, setError] = useState(null);
 
   //Set Dropdown List
@@ -267,4 +267,4 @@ function SearchForecastTime_Cap({ onSearch }) {
   );
 }
 
-export default SearchForecastTime_Cap;
+export default SearchForecastTime_Cap_Chart;
