@@ -1,6 +1,7 @@
 import React, { useState, useEffect , useRef } from "react";
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+// import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGridPro, GridToolbar } from '@mui/x-data-grid-pro';
 import Nav from "../components/Nav";
 import Container from "@mui/material/Container";
 import "./styles/Planning_Product_Price_Analysis.css";
@@ -337,7 +338,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
                     {/* <p>Loading data...{Math.round(loadingPercentage)}%</p> */}
                   </div>
                 ) : (
-                  <DataGrid
+                  <DataGridPro
                     columns={columns}
                     rows={distinctPriceList}
                     slots={{ toolbar: GridToolbar }}
