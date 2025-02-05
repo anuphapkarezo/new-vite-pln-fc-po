@@ -214,7 +214,20 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       cellClassName: 'custom-cream-bg',
     },
 
-    { field: 'qty_fc', headerName: '[A] FC QTY', width: 110 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+    
+    { field: 'fc_bill_to', headerName: '[A] FC Bill To', width: 110 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+      valueFormatter: (params) => {
+        return params.value === '0' ? '-' : params.value;
+      },
+      cellClassName: 'custom-green-bg',
+    },
+    { field: 'po_bill_to', headerName: '[B] PO Bill To', width: 250 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'left' ,
+      valueFormatter: (params) => {
+        return params.value === '0' ? '-' : params.value;
+      },
+      cellClassName: 'custom-green-bg',
+    },
+    { field: 'po_price', headerName: '[C] PO Price', width: 120 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
       valueFormatter: (params) => {
         if (params.value == 0) {
           return '-';
@@ -224,19 +237,13 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       },
       cellClassName: 'custom-green-bg',
     },
-    { field: 'fc_bill_to', headerName: '[B] FC Bill To', width: 110 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+    { field: 'so_curr', headerName: '[D] PO Unit Price', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
       valueFormatter: (params) => {
         return params.value === '0' ? '-' : params.value;
       },
       cellClassName: 'custom-green-bg',
     },
-    { field: 'po_bill_to', headerName: '[C] PO Bill To', width: 250 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'left' ,
-      valueFormatter: (params) => {
-        return params.value === '0' ? '-' : params.value;
-      },
-      cellClassName: 'custom-green-bg',
-    },
-    { field: 'po_price', headerName: '[D] PO Price', width: 120 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+    { field: 'po_price_thb', headerName: '[E] PO Price [THB]', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
       valueFormatter: (params) => {
         if (params.value == 0) {
           return '-';
@@ -246,13 +253,17 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       },
       cellClassName: 'custom-green-bg',
     },
-    { field: 'so_curr', headerName: '[E] PO Unit Price', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+    { field: 'qty_fc', headerName: '[F] FC QTY', width: 110 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
       valueFormatter: (params) => {
-        return params.value === '0' ? '-' : params.value;
+        if (params.value == 0) {
+          return '-';
+        }
+        const value = parseInt(params.value, 10);
+        return value.toLocaleString();
       },
       cellClassName: 'custom-green-bg',
     },
-    { field: 'total_fc_amt_thb', headerName: '[F] FC Amount [THB]', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+    { field: 'total_fc_amt_thb', headerName: '[G] FC Amount [THB]', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
       valueFormatter: (params) => {
         if (params.value == 0) {
           return '-';
