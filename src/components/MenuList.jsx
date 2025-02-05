@@ -23,6 +23,7 @@ import countUsageAnalysis from "./catchCount/CountUsageAnalysis.jsx";
 import MicrowaveIcon from '@mui/icons-material/Microwave';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
+import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 
 const MenuList = () => {
   //bind value user from localstorage
@@ -332,6 +333,40 @@ const MenuList = () => {
           </ListItemIcon>
           <ListItemText
             primary="Proessc no Leadtime"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
+      </ListItem>
+
+      {/*  */}
+      <ListItem
+        disablePadding
+        sx={{ display: "block", color: "black" }}
+        component={Link}
+        to="/pln_prod_price_analysis"
+      >
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+              color: "inherit", // Set initial color
+              "&:hover": {
+                color: "primary.main", // Change color on hover
+              },
+            }}
+          >
+            <PriceChangeOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Product Price"
             sx={{ opacity: open ? 1 : 0 }}
           />
         </ListItemButton>

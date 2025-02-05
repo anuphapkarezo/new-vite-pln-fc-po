@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Nav from "../src/components/Nav";
 import { Fragment } from "react";
 import ProtectedRoutes from "./components/auths/ProtectedRoutes";
+import Planning_Product_Price_Analysis from "./pages/Planning_Product_Price_Analysis";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/pln_manage_mc_in_proc" element={<Planning_Manage_Machine_In_Process />}/>
           <Route path="/proc_std_lt_master" element={<Process_STD_Leasdtime_Master />}/>
           <Route path="/prod_rout_no_std_lt" element={<Product_Routing_No_STD_LT />}/>
+          <Route path="/pln_prod_price_analysis" element={<Planning_Product_Price_Analysis />}/>
         </Route>
         {/* Protect */}
       </Routes>

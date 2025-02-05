@@ -223,7 +223,7 @@ export default function Nav() {
             <Avatar
               sx={{ m: 1 }}
               alt={userName ? `${userName}` : ""}
-              src="/broken-image.jpg"
+              // src="/broken-image.jpg"
             />
             <Typography variant="p" sx={{ mr: 2, fontWeight: "Bold" }}>
               User :{" "}
