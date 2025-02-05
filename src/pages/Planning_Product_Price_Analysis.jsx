@@ -35,7 +35,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
         ...row,
         id: index, // You can use a better unique identifier here if available
       }));
-      console.log('rowsWithId :' , rowsWithId);
+      // console.log('rowsWithId :' , rowsWithId);
       setdistinctPriceList(rowsWithId);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -346,9 +346,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
                     slotProps={{ toolbar: { showQuickFilter: true } }}
                     columnVisibilityModel={columnVisibilityModel}
                     // checkboxSelection
-                    onColumnVisibilityModelChange={(newModel) =>
-                      setColumnVisibilityModel(newModel)
-                    }
+                    onColumnVisibilityModelChange={(newModel) =>setColumnVisibilityModel(newModel)}
                     sx={{
                       '& .MuiDataGrid-row': {
                         backgroundColor: 'white', // Change to desired color
