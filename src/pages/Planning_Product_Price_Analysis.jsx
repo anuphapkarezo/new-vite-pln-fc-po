@@ -60,6 +60,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
     },
     { field: 'prd_item_code', headerName: 'Product Item', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , cellClassName: 'custom-blue-bg',},
     { field: 'prd_name', headerName: 'Product Name', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , cellClassName: 'custom-blue-bg',},
+    { field: 'pd_series', headerName: 'Series', width: 80 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'center' , cellClassName: 'custom-blue-bg',},
     { field: 'cr_name', headerName: 'CR Name', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , 
       valueFormatter: (params) => {
         return params.value === 'NaN' ? '-' : params.value;
@@ -118,23 +119,6 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
           return numericValue === 0 ? '-' : numericValue.toFixed(2);
         } else {
           return "Invalid Data"; // or any default value or an empty string
-        }
-      },
-      cellClassName: 'custom-blue-bg',
-    },
-    { field: 'exr_rate', headerName: 'Exchange Rate [THB]', width: 180 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'right' , 
-      valueFormatter: (params) => {
-        // Ensure the value is a string before applying replace
-        const value = params.value ? String(params.value) : '';
-    
-        // Attempt to convert the cleaned string to a number
-        const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
-    
-        // Check if the value is a valid number
-        if (!isNaN(numericValue)) {
-          return numericValue === 0 ? '-' : numericValue.toFixed(2);
-        } else {
-          return "-"; // or any default value or an empty string
         }
       },
       cellClassName: 'custom-blue-bg',
@@ -261,7 +245,27 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       },
       cellClassName: 'custom-orange-bg',
     },
-
+    { field: 'exr_rate', headerName: 'Exchange Rate [THB]', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price-fpc' , align: 'right' , 
+      valueFormatter: (params) => {
+        if (!params.value) return '-';
+    
+        // Convert value to a number
+        const numericValue = parseFloat(params.value.toString().replace(/[^0-9.-]+/g, ""));
+    
+        // Check if the value is a valid number
+        if (!isNaN(numericValue)) {
+          // Format with comma separators
+          return numericValue === 0 
+            ? '-' 
+            : numericValue % 1 === 0 
+              ? numericValue.toLocaleString() // Integer format
+              : numericValue.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 }); // Float format
+        } else {
+          return "Invalid Data"; // Handle invalid numbers
+        }
+      },
+      cellClassName: 'custom-orange-bg',
+    },
     { field: 'prd_price_thb', headerName: 'Product Price [THB]', width: 160 , headerAlign: 'center' , headerClassName: 'bold-header-price-fpc' , align: 'right' , 
       valueFormatter: (params) => {
         // Ensure the value is a string before applying replace
