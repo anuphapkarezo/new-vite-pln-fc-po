@@ -86,6 +86,11 @@
     background-color: #CDFADB !important;
 }
 
+.custom-red-bg {
+    background-color: orange !important;
+    color: white; /* Optional: To ensure text is readable */
+  }
+
 
   
 
