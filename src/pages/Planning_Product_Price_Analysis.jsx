@@ -1,6 +1,6 @@
 import React, { useState, useEffect , useRef } from "react";
 import Box from '@mui/material/Box';
-// import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { DataGridPro, GridToolbar } from '@mui/x-data-grid-pro';
 import Nav from "../components/Nav";
 import Container from "@mui/material/Container";
@@ -10,16 +10,32 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Autocomplete, TextField } from '@mui/material';
 import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
+import EditIcon from "@mui/icons-material/Edit";
+import Swal from 'sweetalert2';
 
 export default function Planning_Product_Price_Analysis({ onSearch }) {
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const [distinctPriceList, setdistinctPriceList] = useState([]);
+  const [distinctPriceListSummary, setdistinctPriceListSummary] = useState([]);
+
+  const [selectedRecordFactory, setSelectedRecordFactory] = useState(null);
+  const [selectedRecordProductItem, setSelectedRecordProductItem] = useState(null);
+  const [selectedRecordProductName, setSelectedRecordProductName] = useState(null);
+  const [selectedRecordProductSeries, setSelectedRecordProductSeries] = useState(null);
+  const [selectedRecordCrName, setSelectedRecordCrName] = useState(null);
+  const [selectedRecordStatus, setSelectedRecordStatus] = useState(null);
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({});
+  const [columnVisibilityModel_Summary, setColumnVisibilityModel_Summary] = React.useState({});
 
   const [filterModel, setFilterModel] = React.useState({
+    items: [],
+    quickFilterExcludeHiddenColumns: true,
+    quickFilterValues: [''],
+  });
+  const [filterModel_Summary, setFilterModel_Summary] = React.useState({
     items: [],
     quickFilterExcludeHiddenColumns: true,
     quickFilterValues: [''],
@@ -45,9 +61,31 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       setIsLoading(false); // Set isLoading back to false when fetch is complete
     }
   };
+
+  const fetchDataPriceListSummary = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`http://10.17.100.115:3001/api/smart_planning/filter-price-analysis-summary`);
+
+      const data = await response.data;
+      // Add a unique id property to each row
+      const rowsWithId = data.map((row, index) => ({
+        ...row,
+        id: index, // You can use a better unique identifier here if available
+      }));
+      // console.log('rowsWithId :' , rowsWithId);
+      setdistinctPriceListSummary(rowsWithId);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // setError("An error occurred while fetching data Wip Details");
+    } finally {
+      setIsLoading(false); // Set isLoading back to false when fetch is complete
+    }
+  };
   
   useEffect(() => {
     fetchDataPriceList();
+    fetchDataPriceListSummary();
   }, []);
 
   const columns = [
@@ -61,6 +99,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
     { field: 'prd_item_code', headerName: 'Product Item', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , cellClassName: 'custom-blue-bg',},
     { field: 'prd_name', headerName: 'Product Name', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , cellClassName: 'custom-blue-bg',},
     { field: 'pd_series', headerName: 'Series', width: 80 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'center' , cellClassName: 'custom-blue-bg',},
+    { field: 'prd_status', headerName: 'Product Status', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'center' , cellClassName: 'custom-blue-bg',},
     { field: 'cr_name', headerName: 'CR Name', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , 
       valueFormatter: (params) => {
         return params.value === 'NaN' ? '-' : params.value;
@@ -420,10 +459,296 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
     //
   ]
 
+  const columns_summary = [
+    { field: 'factory', headerName: 'Ship Factory', width: 110 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'center' , 
+      valueFormatter: (params) => {
+        return params.value === 'NaN' ? '-' : params.value;
+      },
+      cellClassName: 'custom-blue-bg',
+    },
+    { field: 'prd_item_code', headerName: 'Product Item', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , cellClassName: 'custom-blue-bg',},
+    { field: 'prd_name', headerName: 'Product Name', width: 170 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , cellClassName: 'custom-blue-bg',},
+    { field: 'pd_series', headerName: 'Series', width: 80 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'center' , cellClassName: 'custom-blue-bg',},
+    { field: 'prd_status', headerName: 'Product Status', width: 130 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'center' , cellClassName: 'custom-blue-bg',},
+    { field: 'cr_name', headerName: 'CR Name', width: 150 , headerAlign: 'center' , headerClassName: 'bold-header-price' , align: 'left' , 
+      valueFormatter: (params) => {
+        return params.value === 'NaN' ? '-' : params.value;
+      },
+      cellClassName: 'custom-blue-bg',
+    },
+    { field: 'prd_price', headerName: 'FPC Price', width: 100 , headerAlign: 'center' , headerClassName: 'bold-header-price-fpc' , align: 'right' , 
+      valueFormatter: (params) => {
+        // Ensure the value is a string before applying replace
+        const value = params.value ? String(params.value) : '';
+    
+        // Attempt to convert the cleaned string to a number
+        const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
+    
+        // Check if the value is a valid number
+        if (!isNaN(numericValue)) {
+          return numericValue === 0 ? '-' : numericValue.toFixed(4);
+        } else {
+          return "-"; // or any default value or an empty string
+        }
+      },
+      cellClassName: 'custom-orange-bg',
+    },
+    { field: 'prd_currency', headerName: 'Unit', width: 60 , headerAlign: 'center' , headerClassName: 'bold-header-price-fpc' , align: 'center' , 
+      valueFormatter: (params) => {
+        return params.value === '0' ? '-' : params.value;
+      },
+      cellClassName: 'custom-orange-bg',
+    },
+    { field: 'prd_price_thb', headerName: 'FPC Price [THB]', width: 140 , headerAlign: 'center' , headerClassName: 'bold-header-price-fpc' , align: 'right' , 
+      valueFormatter: (params) => {
+        // Ensure the value is a string before applying replace
+        const value = params.value ? String(params.value) : '';
+    
+        // Attempt to convert the cleaned string to a number
+        const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
+    
+        // Check if the value is a valid number
+        if (!isNaN(numericValue)) {
+          return numericValue === 0 ? '-' : numericValue.toFixed(4);
+        } else {
+          return "-"; // or any default value or an empty string
+        }
+      },
+      cellClassName: 'custom-orange-bg',
+    },
+    
+    { field: 'po_price', headerName: 'PO Price', width: 100 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'right' ,
+      valueFormatter: (params) => {
+        // Ensure the value is a string before applying replace
+        const value = params.value ? String(params.value) : '';
+    
+        // Attempt to convert the cleaned string to a number
+        const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
+    
+        // Check if the value is a valid number
+        if (!isNaN(numericValue)) {
+          return numericValue === 0 ? '-' : numericValue.toFixed(4);
+        } else {
+          return "-"; // or any default value or an empty string
+        }
+      },
+      cellClassName: 'custom-green-bg',
+    },
+    { field: 'so_curr', headerName: 'Unit', width: 60 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'center' ,
+      valueFormatter: (params) => {
+        return params.value === '0' ? '-' : params.value;
+      },
+      cellClassName: 'custom-green-bg',
+    },
+    { field: 'po_price_thb', headerName: 'PO Price [THB]', width: 140 , headerAlign: 'center' , headerClassName: 'bold-header-price-fc' , align: 'right' ,
+      valueFormatter: (params) => {
+        // Ensure the value is a string before applying replace
+        const value = params.value ? String(params.value) : '';
+    
+        // Attempt to convert the cleaned string to a number
+        const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ""));
+    
+        // Check if the value is a valid number
+        if (!isNaN(numericValue)) {
+          return numericValue === 0 ? '-' : numericValue.toFixed(4);
+        } else {
+          return "-"; // or any default value or an empty string
+        }
+      },
+      cellClassName: 'custom-green-bg',
+    },
+
+    { field: 'chk_price_fpc_po', headerName: 'CHECK PRICE [FPC,PO]', width: 190 , headerAlign: 'center' , headerClassName: 'bold-header-cal' , align: 'center', cellClassName: 'custom-blue-bg',},
+    { field: 'diff_value', headerName: 'PRICE DIFF.', width: 120 , headerAlign: 'center' , headerClassName: 'bold-header-cal' , align: 'right' , 
+      valueFormatter: (params) => {
+        // Get the full row data using the row ID
+        const row = params.api.getRow(params.id);
+        // Ensure row exists and chk_price_fpc_po is "COMPARE"
+        if (!row || row.chk_price_fpc_po !== "COMPARE") {
+          return "-";
+        }
+        const numericValue = parseFloat(params.value ? String(params.value).replace(/[^0-9.-]+/g, "") : "");
+        // Check if the value is a valid number
+        if (!isNaN(numericValue)) {
+          return numericValue === 0 ? "0" : numericValue.toFixed(4);
+        } else {
+          return "-"; // Default fallback
+        }
+      },
+      cellClassName: 'custom-blue-bg',
+    },
+    { field: 'pln_conf', headerName: 'STATUS', width: 100 , headerAlign: 'center' , headerClassName: 'bold-header-cal' , align: 'center', cellClassName: 'custom-blue-bg',
+      valueFormatter: (params) => {
+        return params.value === null ? '-' : params.value;
+      },
+    },
+    { field: 'submit', headerName: 'CONFIRM', width: 100 , headerAlign: 'center' , headerClassName: 'bold-header-cal' , align: 'center', cellClassName: 'custom-blue-bg',
+      renderCell: (params) => {
+        // console.log('Row', params.row); // Add this line to log the row object
+        return (
+          <div>
+            <button 
+              style={{backgroundColor: 'orange', margin: 5}}
+              className="btn_hover"
+              onClick={() => { handleConfirmClick(params.row);}}
+            >
+              <EditIcon />
+            </button>
+          </div>
+        );
+      },
+    },
+  ]
+
+  const handleConfirmClick = (row) => {
+    setSelectedRecordFactory(row.factory)
+    setSelectedRecordProductItem(row.prd_item_code)
+    setSelectedRecordProductName(row.prd_name)
+    setSelectedRecordProductSeries(row.pd_series)
+    setSelectedRecordCrName(row.cr_name)
+    setSelectedRecordStatus(row.pln_conf)
+  };
+
+  const handleInsertConfirm = (row) => {
+    if ( selectedRecordStatus == 'CONFIRM' ) {
+    } else {
+      const swalWithZIndex = Swal.mixin({
+        customClass: {
+          popup: 'my-swal-popup', // Define a custom class for the SweetAlert popup
+        },
+      });
+      swalWithZIndex.fire({
+        title: "Confirm Different",
+        text: "Are you sure you want to confirm this value?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Confirm",
+        cancelButtonText: "Cancel",
+        }).then((result) => {
+          if (result.isConfirmed) 
+            {
+              axios
+              .get(
+                `http://10.17.100.115:3001/api/smart_planning/insert-planner-confirm-diff?factory=${selectedRecordFactory}&prd_item=${selectedRecordProductItem}&prd_name=${selectedRecordProductName}&prd_series=${selectedRecordProductSeries}&cr_name=${selectedRecordCrName}`
+              )
+              .then(() => {
+                fetchDataPriceList();
+                fetchDataPriceListSummary();
+                
+                setSelectedRecordFactory(null)
+                setSelectedRecordProductItem(null)
+                setSelectedRecordProductName(null)
+                setSelectedRecordProductSeries(null)
+                setSelectedRecordCrName(null)
+                setSelectedRecordStatus(null)
+              })
+              .then(() => {
+                // Success notification
+                Swal.fire({
+                  icon: "success",
+                  title: "Confirm Success",
+                  text: "Planner Confirmed successfully",
+                  confirmButtonText: "OK",
+                });
+              })
+              .catch((error) => {
+                console.error("Error Confirming data:", error);
+                // Handle the error or display an error message using Swal
+                Swal.fire({
+                  icon: "error",
+                  title: "Confirm Error",
+                  text: "An error occurred while Confirming data",
+                  confirmButtonText: "OK",
+                });
+              });
+
+            } else {
+              setSelectedRecordFactory(null)
+              setSelectedRecordProductItem(null)
+              setSelectedRecordProductName(null)
+              setSelectedRecordProductSeries(null)
+              setSelectedRecordCrName(null)
+              setSelectedRecordStatus(null)
+            }
+      });
+      // console.log('selectedRecordFactory :', selectedRecordFactory);
+      // console.log('selectedRecordProductItem :', selectedRecordProductItem);
+      // console.log('selectedRecordProductName :', selectedRecordProductName);
+      // console.log('selectedRecordProductSeries :', selectedRecordProductSeries);
+      // console.log('selectedRecordCrName :', selectedRecordCrName);
+      // console.log('selectedRecordStatus :', selectedRecordStatus);
+    }
+  };
+
+  useEffect(() => {
+    if ( selectedRecordFactory !== null || selectedRecordProductItem !== null || selectedRecordProductName !== null || selectedRecordProductSeries !== null || selectedRecordCrName !== null ) {
+      handleInsertConfirm();
+    }
+  }, [selectedRecordFactory, selectedRecordProductItem, selectedRecordProductName, selectedRecordProductSeries, selectedRecordCrName]);
+
   return (
     <>
       <div className="background-container">
         <Container maxWidth="lg">
+        <Box>
+            <Nav />
+            <div>
+              <h5
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  color: "#006769",
+                  width: "500px",
+                  paddingLeft: "5px",
+                  marginBottom: "20px",
+                  // backgroundColor: '#CAE6B2',
+                }}
+              >
+                Product Pricing Summary
+              </h5>
+            </div>
+            <Box sx={{ height: 720 , width: 1750 , marginTop: 1 , backgroundColor: '#C6E7FF'}}>
+
+                {isLoading ? ( // Render the loading indicator if isLoading is true
+                  <div
+                    className="loading-indicator"
+                    style={{
+                      display: 'flex',
+                      flexDirection: "column",
+                      justifyContent: 'center', 
+                      alignItems: 'center', 
+                      position: 'absolute', 
+                      top: '50%', 
+                      left: '70%', 
+                      transform: 'translate(-50%, -50%)', 
+                      zIndex: 1
+                    }}
+                  >
+                    <CircularProgress />{" "}
+                    {/* Use the appropriate CircularProgress component */}
+                    <p>Loading data...</p>
+                    {/* <p>Loading data...{Math.round(loadingPercentage)}%</p> */}
+                  </div>
+                ) : (
+                  <DataGrid
+                    columns={columns_summary}
+                    rows={distinctPriceListSummary}
+                    slots={{ toolbar: GridToolbar }}
+                    filterModel={filterModel_Summary}
+                    onFilterModelChange={(newModel) => setFilterModel_Summary(newModel)}
+                    slotProps={{ toolbar: { showQuickFilter: true } }}
+                    columnVisibilityModel={columnVisibilityModel_Summary}
+                    // checkboxSelection
+                    onColumnVisibilityModelChange={(newModel) =>setColumnVisibilityModel_Summary(newModel)}
+                    sx={{
+                      '& .MuiDataGrid-row': {
+                        backgroundColor: 'white', // Change to desired color
+                      },
+                    }}
+                  />
+                )}
+            </Box>
+          </Box>
           <Box>
             <Nav />
             <div>
@@ -441,8 +766,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
                 Product Pricing Analysis
               </h5>
             </div>
-            <Box sx={{ height: 720 , width: 1660 , marginTop: 1 , backgroundColor: '#C6E7FF'}}>
-
+            <Box sx={{ height: 720 , width: 1750 , marginTop: 1 , marginBottom: 5, backgroundColor: '#C6E7FF'}}>
                 {isLoading ? ( // Render the loading indicator if isLoading is true
                   <div
                     className="loading-indicator"

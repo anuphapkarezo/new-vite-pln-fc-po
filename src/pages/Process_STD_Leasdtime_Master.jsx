@@ -92,7 +92,7 @@ export default function Process_STD_Leasdtime_Master({ onSearch }) {
                   marginLeft: 20
                   }}>
                   Process Standard Leadtime</p>
-              <Box sx={{ width: 805 ,  height: 570 , marginLeft: 3}}>
+              <Box sx={{ width: 810 ,  height: 570 , marginLeft: 3}}>
                   <DataGrid
                       columns={columns}
                       // disableColumnFilter

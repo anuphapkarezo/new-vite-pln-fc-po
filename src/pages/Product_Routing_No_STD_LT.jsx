@@ -109,7 +109,7 @@ export default function Product_Routing_No_STD_LT({ onSearch }) {
                   marginLeft: 20
                   }}>
                   Product Routing no standard Leadtime</p>
-              <Box sx={{ width: 1435 ,  height: 570 , marginLeft: 3}}>
+              <Box sx={{ width: 1440 ,  height: 570 , marginLeft: 3}}>
                     <DataGrid
                       columns={columns}
                       // disableColumnFilter
