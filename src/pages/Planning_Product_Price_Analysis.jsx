@@ -12,6 +12,7 @@ import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from "@mui/icons-material/Edit";
 import Swal from 'sweetalert2';
+import ReactApexChart from 'react-apexcharts';
 
 export default function Planning_Product_Price_Analysis({ onSearch }) {
   const [isError, setIsError] = useState(null);
@@ -86,6 +87,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
   useEffect(() => {
     fetchDataPriceList();
     fetchDataPriceListSummary();
+    fetchBasicBarChartData();
   }, []);
 
   const columns = [
@@ -686,11 +688,351 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
     }
   }, [selectedRecordFactory, selectedRecordProductItem, selectedRecordProductName, selectedRecordProductSeries, selectedRecordCrName]);
 
+  // const [basicBarChartData, setBasicBarChartData] = useState({
+  //   series: [],
+  //   options: {
+  //     title: {
+  //       // ชื่อ chart หรือข้อความที่ต้องการแสดง
+  //       text: 'Product Pricing Summary [Different]',
+  //       align: 'center',
+  //       margin: 10,
+  //       offsetY: 5,
+  //       style: {
+  //         fontSize: '20px',
+  //       },
+  //       position: 'top',
+  //     },
+  //   },
+  // });
+  
+  const [basicBarChartData, setBasicBarChartData] = useState({
+    series: [],
+    options: {
+      title: {
+        text: 'Product Pricing [Different]',
+        align: 'center',
+        margin: 15,
+        offsetY: 5,
+        style: {
+          fontSize: '22px',
+          fontWeight: 'bold',
+          color: '#2E3B55', // Dark blue title
+        },
+      },
+      chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: { show: false }, // Hide toolbar for a cleaner look
+      },
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            colors: ['#2E3B55'], // Dark blue
+          },
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Price Diff.',
+          style: {
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: '#2E3B55',
+          },
+        },
+        labels: {
+          formatter: (value) => value.toFixed(0),
+        },
+      },
+      legend: {
+        position: 'bottom',
+        markers: {
+          radius: 5,
+        },
+        labels: {
+          colors: '#2E3B55',
+          useSeriesColors: true,
+        },
+      },
+      fill: {
+        colors: ['#0B60B0'], // Use a deep blue color
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 5,
+          distributed: true, // Make bars unique in color
+          dataLabels: {
+            position: 'top',
+          },
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '14px',
+          fontWeight: 'bold',
+          colors: ['#000'], // Black text
+        },
+        dropShadow: {
+          enabled: true,
+          top: 1,
+          left: 1,
+          blur: 2,
+          color: '#fff',
+          opacity: 0.75,
+        },
+      },
+      tooltip: {
+        theme: 'dark',
+        y: {
+          formatter: (val) => `${val.toFixed(0)} Products`,
+        },
+      },
+      grid: {
+        borderColor: '#E0E0E0',
+        strokeDashArray: 4,
+      },
+    },
+  });
+  
+  // const fetchBasicBarChartData = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const StartD = new Date();
+  //     StartD.setDate(StartD.getDate() - 3);
+  //     const year = StartD.getFullYear();
+  //     const month_x = (StartD.getMonth() + 1).toString().padStart(2, '0');
+  //     const date = StartD.getDate().toString().padStart(2, '0');
+  //     const StartDate = date +'/'+ month_x +'/'+ year
+
+  //     const EndD = new Date();
+  //     EndD.setDate(EndD.getDate() + 3);
+  //     const yearE = EndD.getFullYear();
+  //     const month_xE = (EndD.getMonth() + 1).toString().padStart(2, '0');
+  //     const dateE = EndD.getDate().toString().padStart(2, '0');
+  //     const EndDate = dateE +'/'+ month_xE +'/'+ yearE
+
+  //     const response = await axios.get(`http://10.17.100.115:3001/api/smart_planning/filter-price-analysis-summary-chart?StartDate=${StartDate}&EndDate=${EndDate}`);
+  //     const data = response.data;
+  
+  //     const series = data.map(item => parseInt(item.count_date)); // Extract series data from total_amount
+  //     const categories = data.map(item => item.date_cim); // Extract categories (x-axis labels) from month_inv
+  //     const colors = ['#0B60B0']; // Add more colors as needed
+  
+  //     setBasicBarChartData({
+  //       series: [{ data: series }],
+  //       options: {
+  //         title: {
+  //           text: 'Product Pricing Summary [Different]',
+  //           align: 'center',
+  //           margin: 10,
+  //           offsetY: 5,
+  //           style: {
+  //             fontSize: '20px',
+  //           },
+  //           position: 'top',
+  //         },
+  //         chart: {
+  //           type: 'bar',
+  //           height: 350,
+  //           stacked: true,
+  //           toolbar: {
+  //             show: true,
+  //           },
+  //           zoom: {
+  //             enabled: true,
+  //           },
+  //         },
+  //         xaxis: {
+  //           categories: categories,
+  //         },
+  //         yaxis: {
+  //           title: {
+  //             text: 'Price diff.',
+  //           },
+  //           labels: {
+  //             formatter: function (value) {
+  //               return value.toFixed(0);
+  //             },
+  //           },
+  //         },
+  //         legend: {
+  //           position: 'right',
+  //           offsetY: 40,
+  //           labels: {
+  //             colors: ['#2E3B55'], // Match this color with your legend labels
+  //             useSeriesColors: true, // Use the series colors for legend
+  //           },
+  //         },
+  //         fill: {
+  //           opacity: 1,
+  //           colors: colors, // Dynamically set the color of bars based on the series
+  //         },
+  //         plotOptions: {
+  //           bar: {
+  //             borderRadius: 5,
+  //             dataLabels: {
+  //               position: 'top',
+  //             },
+  //           },
+  //         },
+  //         dataLabels: {
+  //           enabled: true,
+  //           formatter: function (value) {
+  //             return value.toFixed(0);
+  //           },
+  //           offsetY: -20,
+  //           style: {
+  //             colors: ['#000000'],
+  //             rotate: -45,
+  //           },
+  //         },
+  //         tooltip: {
+  //           y: {
+  //             formatter: function (val) {
+  //               return new Intl.NumberFormat('en-US', {
+  //                 style: 'decimal',
+  //               }).format(val) + ' Product';
+  //             },
+  //           },
+  //         },
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error('Error fetching basic bar chart data:', error);
+  //     setError('An error occurred while fetching basic bar chart data');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const fetchBasicBarChartData = async () => {
+    try {
+      setIsLoading(true);
+      const StartD = new Date();
+      StartD.setDate(StartD.getDate() - 3);
+      const year = StartD.getFullYear();
+      const month_x = (StartD.getMonth() + 1).toString().padStart(2, '0');
+      const date = StartD.getDate().toString().padStart(2, '0');
+      const StartDate = date + '/' + month_x + '/' + year;
+  
+      const EndD = new Date();
+      EndD.setDate(EndD.getDate() + 3);
+      const yearE = EndD.getFullYear();
+      const month_xE = (EndD.getMonth() + 1).toString().padStart(2, '0');
+      const dateE = EndD.getDate().toString().padStart(2, '0');
+      const EndDate = dateE + '/' + month_xE + '/' + yearE;
+  
+      const response = await axios.get(
+        `http://10.17.100.115:3001/api/smart_planning/filter-price-analysis-summary-chart?StartDate=${StartDate}&EndDate=${EndDate}`
+      );
+      const data = response.data;
+  
+      const series = data.map((item) => parseInt(item.count_date)); // Extract series data from total_amount
+      const categories = data.map((item) => item.date_cim); // Extract categories (x-axis labels) from month_inv
+  
+      // Generate random colors or define specific colors for each bar
+      const barColors = categories.map((_, index) => {
+        // Example: Cycle through a set of colors for each bar
+        const colorSet = ['#0B60B0', '#FF5733', '#33FF57', '#FFC300', '#9C27B0'];
+        return colorSet[index % colorSet.length]; // Cycle through colorSet if there are more bars than colors
+      });
+  
+      setBasicBarChartData({
+        series: [{ data: series }],
+        options: {
+          title: {
+            text: 'Product Pricing [Different]',
+            align: 'center',
+            margin: 10,
+            offsetY: 5,
+            style: {
+              fontSize: '20px',
+            },
+            position: 'top',
+          },
+          chart: {
+            type: 'bar',
+            height: 350,
+            stacked: true,
+            toolbar: {
+              show: true,
+            },
+            zoom: {
+              enabled: true,
+            },
+          },
+          xaxis: {
+            categories: categories,
+          },
+          yaxis: {
+            title: {
+              text: 'Price diff.',
+            },
+            labels: {
+              formatter: function (value) {
+                return value.toFixed(0); // Format to two decimal places
+              },
+            },
+          },
+          legend: {
+            position: 'right',
+            offsetY: 40,
+            labels: {
+              colors: ['#2E3B55'],
+              useSeriesColors: true,
+            },
+          },
+          fill: {
+            opacity: 1,
+            colors: barColors, // Apply different colors for each bar
+          },
+          plotOptions: {
+            bar: {
+              borderRadius: 5,
+              dataLabels: {
+                position: 'top',
+              },
+            },
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function (value) {
+              return value.toFixed(0); // Format to two decimal places
+            },
+            offsetY: -20,
+            style: {
+              colors: ['#000000'],
+              rotate: -45,
+            },
+          },
+          tooltip: {
+            y: {
+              formatter: function (val) {
+                return new Intl.NumberFormat('en-US', {
+                  style: 'decimal',
+                }).format(val) + ' Product';
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error fetching basic bar chart data:', error);
+      setError('An error occurred while fetching basic bar chart data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="background-container">
         <Container maxWidth="lg">
-        <Box>
+          <Box>
             <Nav />
             <div>
               <h5
@@ -750,7 +1092,11 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
             </Box>
           </Box>
           <Box>
-            <Nav />
+          <Box sx={{ width: 850, height: 370, backgroundColor: '#FFF3CF', marginTop: 5 , border: '1px solid black', borderRadius: 5 }}>
+            <ReactApexChart options={basicBarChartData.options} series={basicBarChartData.series} type="bar" height={370} />
+          </Box>
+          </Box>
+          <Box>
             <div>
               <h5
                 style={{
@@ -767,44 +1113,22 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
               </h5>
             </div>
             <Box sx={{ height: 720 , width: 1750 , marginTop: 1 , marginBottom: 5, backgroundColor: '#C6E7FF'}}>
-                {isLoading ? ( // Render the loading indicator if isLoading is true
-                  <div
-                    className="loading-indicator"
-                    style={{
-                      display: 'flex',
-                      flexDirection: "column",
-                      justifyContent: 'center', 
-                      alignItems: 'center', 
-                      position: 'absolute', 
-                      top: '50%', 
-                      left: '70%', 
-                      transform: 'translate(-50%, -50%)', 
-                      zIndex: 1
-                    }}
-                  >
-                    <CircularProgress />{" "}
-                    {/* Use the appropriate CircularProgress component */}
-                    <p>Loading data...</p>
-                    {/* <p>Loading data...{Math.round(loadingPercentage)}%</p> */}
-                  </div>
-                ) : (
-                  <DataGridPro
-                    columns={columns}
-                    rows={distinctPriceList}
-                    slots={{ toolbar: GridToolbar }}
-                    filterModel={filterModel}
-                    onFilterModelChange={(newModel) => setFilterModel(newModel)}
-                    slotProps={{ toolbar: { showQuickFilter: true } }}
-                    columnVisibilityModel={columnVisibilityModel}
-                    // checkboxSelection
-                    onColumnVisibilityModelChange={(newModel) =>setColumnVisibilityModel(newModel)}
-                    sx={{
-                      '& .MuiDataGrid-row': {
-                        backgroundColor: 'white', // Change to desired color
-                      },
-                    }}
-                  />
-                )}
+                <DataGridPro
+                  columns={columns}
+                  rows={distinctPriceList}
+                  slots={{ toolbar: GridToolbar }}
+                  filterModel={filterModel}
+                  onFilterModelChange={(newModel) => setFilterModel(newModel)}
+                  slotProps={{ toolbar: { showQuickFilter: true } }}
+                  columnVisibilityModel={columnVisibilityModel}
+                  // checkboxSelection
+                  onColumnVisibilityModelChange={(newModel) =>setColumnVisibilityModel(newModel)}
+                  sx={{
+                    '& .MuiDataGrid-row': {
+                      backgroundColor: 'white', // Change to desired color
+                    },
+                  }}
+                />
             </Box>
           </Box>
           
