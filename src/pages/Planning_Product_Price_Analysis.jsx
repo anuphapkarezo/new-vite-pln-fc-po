@@ -909,6 +909,125 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
   //   }
   // };
 
+  // const fetchBasicBarChartData = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const StartD = new Date();
+  //     StartD.setDate(StartD.getDate() - 3);
+  //     const year = StartD.getFullYear();
+  //     const month_x = (StartD.getMonth() + 1).toString().padStart(2, '0');
+  //     const date = StartD.getDate().toString().padStart(2, '0');
+  //     const StartDate = date + '/' + month_x + '/' + year;
+  
+  //     const EndD = new Date();
+  //     EndD.setDate(EndD.getDate() + 3);
+  //     const yearE = EndD.getFullYear();
+  //     const month_xE = (EndD.getMonth() + 1).toString().padStart(2, '0');
+  //     const dateE = EndD.getDate().toString().padStart(2, '0');
+  //     const EndDate = dateE + '/' + month_xE + '/' + yearE;
+  
+  //     const response = await axios.get(
+  //       `http://10.17.100.115:3001/api/smart_planning/filter-price-analysis-summary-chart?StartDate=${StartDate}&EndDate=${EndDate}`
+  //     );
+  //     const data = response.data;
+  
+  //     const series = data.map((item) => parseInt(item.count_date)); // Extract series data from total_amount
+  //     const categories = data.map((item) => item.date_cim); // Extract categories (x-axis labels) from month_inv
+  
+  //     // Generate random colors or define specific colors for each bar
+  //     const barColors = categories.map((_, index) => {
+  //       // Example: Cycle through a set of colors for each bar
+  //       const colorSet = ['#0B60B0', '#FF5733', '#33FF57', '#FFC300', '#9C27B0'];
+  //       return colorSet[index % colorSet.length]; // Cycle through colorSet if there are more bars than colors
+  //     });
+  
+  //     setBasicBarChartData({
+  //       series: [{ data: series }],
+  //       options: {
+  //         title: {
+  //           text: 'Product Pricing [Different]',
+  //           align: 'center',
+  //           margin: 10,
+  //           offsetY: 5,
+  //           style: {
+  //             fontSize: '20px',
+  //           },
+  //           position: 'top',
+  //         },
+  //         chart: {
+  //           type: 'bar',
+  //           height: 350,
+  //           stacked: true,
+  //           toolbar: {
+  //             show: true,
+  //           },
+  //           zoom: {
+  //             enabled: true,
+  //           },
+  //         },
+  //         xaxis: {
+  //           categories: categories,
+  //         },
+  //         yaxis: {
+  //           title: {
+  //             text: 'Price diff.',
+  //           },
+  //           labels: {
+  //             formatter: function (value) {
+  //               return value.toFixed(0); // Format to two decimal places
+  //             },
+  //           },
+  //         },
+  //         legend: {
+  //           position: 'right',
+  //           offsetY: 40,
+  //           labels: {
+  //             colors: ['#2E3B55'],
+  //             useSeriesColors: true,
+  //           },
+  //         },
+  //         fill: {
+  //           opacity: 1,
+  //           colors: barColors, // Apply different colors for each bar
+  //         },
+  //         plotOptions: {
+  //           bar: {
+  //             borderRadius: 5,
+  //             dataLabels: {
+  //               position: 'top',
+  //             },
+  //           },
+  //         },
+  //         dataLabels: {
+  //           enabled: true,
+  //           formatter: function (value) {
+  //             return value.toFixed(0); // Format to two decimal places
+  //           },
+  //           offsetY: -20,
+  //           style: {
+  //             colors: ['#000000'],
+  //             rotate: -45,
+  //           },
+  //         },
+  //         tooltip: {
+  //           y: {
+  //             formatter: function (val) {
+  //               return new Intl.NumberFormat('en-US', {
+  //                 style: 'decimal',
+  //               }).format(val) + ' Product';
+  //             },
+  //           },
+  //         },
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error('Error fetching basic bar chart data:', error);
+  //     setError('An error occurred while fetching basic bar chart data');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const fetchBasicBarChartData = async () => {
     try {
       setIsLoading(true);
@@ -931,64 +1050,54 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       );
       const data = response.data;
   
-      const series = data.map((item) => parseInt(item.count_date)); // Extract series data from total_amount
-      const categories = data.map((item) => item.date_cim); // Extract categories (x-axis labels) from month_inv
-  
-      // Generate random colors or define specific colors for each bar
-      const barColors = categories.map((_, index) => {
-        // Example: Cycle through a set of colors for each bar
-        const colorSet = ['#0B60B0', '#FF5733', '#33FF57', '#FFC300', '#9C27B0'];
-        return colorSet[index % colorSet.length]; // Cycle through colorSet if there are more bars than colors
-      });
+      const countDateSeries = data.map((item) => parseInt(item.count_date));
+      const countUpdateSeries = data.map((item) => parseInt(item.count_update));
+      const categories = data.map((item) => item.date_cim);
   
       setBasicBarChartData({
-        series: [{ data: series }],
+        series: [
+          {
+            name: 'Before',
+            data: countDateSeries,
+          },
+          {
+            name: 'After',
+            data: countUpdateSeries,
+          },
+        ],
         options: {
           title: {
-            text: 'Product Pricing [Different]',
+            text: 'Product Pricing Before After Update',
             align: 'center',
-            margin: 10,
-            offsetY: 5,
             style: {
               fontSize: '20px',
             },
-            position: 'top',
           },
           chart: {
             type: 'bar',
             height: 350,
-            stacked: true,
-            toolbar: {
-              show: true,
-            },
-            zoom: {
-              enabled: true,
-            },
+            stacked: false,
+            toolbar: { show: true },
           },
           xaxis: {
             categories: categories,
           },
           yaxis: {
             title: {
-              text: 'Price diff.',
+              text: 'Count',
             },
             labels: {
               formatter: function (value) {
-                return value.toFixed(0); // Format to two decimal places
+                return value.toFixed(0);
               },
             },
           },
           legend: {
             position: 'right',
             offsetY: 40,
-            labels: {
-              colors: ['#2E3B55'],
-              useSeriesColors: true,
-            },
           },
           fill: {
             opacity: 1,
-            colors: barColors, // Apply different colors for each bar
           },
           plotOptions: {
             bar: {
@@ -1000,23 +1109,38 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
           },
           dataLabels: {
             enabled: true,
-            formatter: function (value) {
-              return value.toFixed(0); // Format to two decimal places
+            formatter: function (val) {
+              return val.toFixed(0);
             },
             offsetY: -20,
             style: {
               colors: ['#000000'],
-              rotate: -45,
             },
           },
           tooltip: {
             y: {
               formatter: function (val) {
-                return new Intl.NumberFormat('en-US', {
-                  style: 'decimal',
-                }).format(val) + ' Product';
+                return `${val} Product`;
               },
             },
+          },
+          colors: ['#3A59D1', '#FF5733'], // Different color for each series
+          plotOptions: {
+            bar: {
+              borderRadius: 5,
+              columnWidth: '50%',
+              distributed: false, // Important: set this to false for grouped bars
+              colors: {
+                ranges: [],
+                backgroundBarColors: [],
+                backgroundBarOpacity: 1,
+                backgroundBarRadius: 0,
+              }
+            },
+          },
+          fill: {
+            opacity: 1,
+            colors: ['#3A59D1', '#FF5733'], // applies per series
           },
         },
       });
@@ -1027,7 +1151,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <>
       <div className="background-container">
