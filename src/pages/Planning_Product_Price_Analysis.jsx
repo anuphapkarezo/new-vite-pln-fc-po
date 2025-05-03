@@ -719,6 +719,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
       const categories = data.map(item => item.date_cim);
       const countOkData = data.map(item => Number(item.count_ok));
       const countNgData = data.map(item => Number(item.count_ng));
+      const countNgPoData = data.map(item => Number(item.count_ng_po));
 
       setState({
         series: [
@@ -727,9 +728,13 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
             data: countOkData
           },
           {
+            name: 'No PO Compare',
+            data: countNgPoData
+          },
+          {
             name: 'Price AbNormal',
             data: countNgData
-          }
+          },
         ],
         options: {
           chart: {
@@ -742,7 +747,7 @@ export default function Planning_Product_Price_Analysis({ onSearch }) {
             text: 'Product Pricing Summary Trend Update',
             align: 'center',
           },
-          colors: ['#81E7AF', '#FFA55D'],
+          colors: ['#81E7AF', '#DBDBDB', '#7D0A0A'],
           responsive: [{
             breakpoint: 480,
             options: {
