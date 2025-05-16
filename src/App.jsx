@@ -14,6 +14,7 @@ import { Fragment } from "react";
 import ProtectedRoutes from "./components/auths/ProtectedRoutes";
 import Planning_Product_Price_Analysis from "./pages/Planning_Product_Price_Analysis";
 import Planning_PO_FC_bill_to from "./pages/Planning_PO_FC_bill_to";
+import Planning_Product_Master from "./pages/Planning_Product_Master";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/prod_rout_no_std_lt" element={<Product_Routing_No_STD_LT />}/>
           <Route path="/pln_prod_price_analysis" element={<Planning_Product_Price_Analysis />}/>
           <Route path="/pln_po_fc_bill_to_master" element={<Planning_PO_FC_bill_to />}/>
+          <Route path="/pln_product_master" element={<Planning_Product_Master />}/>
         </Route>
         {/* Protect */}
       </Routes>

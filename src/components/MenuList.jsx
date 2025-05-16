@@ -25,6 +25,7 @@ import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturi
 import SsidChartIcon from '@mui/icons-material/SsidChart';
 import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import FolderCopyTwoToneIcon from '@mui/icons-material/FolderCopyTwoTone';
 
 const MenuList = () => {
   //bind value user from localstorage
@@ -405,6 +406,41 @@ const MenuList = () => {
           />
         </ListItemButton>
       </ListItem>
+
+      <ListItem
+        disablePadding
+        sx={{ display: "block", color: "black" }}
+        component={Link}
+        to="/pln_product_master"
+      >
+        <ListItemButton
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+              color: "inherit", // Set initial color
+              "&:hover": {
+                color: "primary.main", // Change color on hover
+              },
+            }}
+          >
+            <FolderCopyTwoToneIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Product Master"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
+      </ListItem>
+
+      
     </List>
   );
 };
