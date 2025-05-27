@@ -75,6 +75,11 @@ const MenuList = ({ open }) => {
   const handleOpenMasterClick = () => {
     setOpenMaster(!openMaster);
   }; 
+
+  const [openOuter, setOpenOuter] = useState(false);
+  const handleOpenOuterClick = () => {
+    setOpenOuter(!openOuter);
+  }; 
   
   return (
     <List>
@@ -684,14 +689,14 @@ const MenuList = ({ open }) => {
       </Collapse>
 
       {/* ------------------------------Outer Dashboard------------------------------ */}
-      <ListItemButton onClick={handleOpenMasterClick} sx={{ gap: 3 }}>
+      <ListItemButton onClick={handleOpenOuterClick} sx={{ gap: 3 }}>
         <ListItemIcon sx={{ minWidth: 'auto' }}>
           <CopyAllIcon />
         </ListItemIcon>
         <ListItemText primary="Outer Dashboard" />
-        {openMaster ? <ExpandLess /> : <ExpandMore />}
+        {openOuter ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
-      <Collapse in={openMaster} timeout="auto" unmountOnExit>
+      <Collapse in={openOuter} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem
             onClick={countUsageAnalysis}
