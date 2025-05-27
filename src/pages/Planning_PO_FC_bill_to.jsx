@@ -20,6 +20,8 @@ import Swal from 'sweetalert2';
 import { red } from "@mui/material/colors";
 
 export default function Planning_PO_FC_bill_to({ onSearch }) {
+  localStorage.setItem('page_name', 'Bill-To Master');
+
   const userString = localStorage.getItem("userToken");
   const userObject = JSON.parse(userString);
   const userName = userObject?.user_name;
@@ -235,7 +237,7 @@ export default function Planning_PO_FC_bill_to({ onSearch }) {
                   // backgroundColor: '#CAE6B2',
                 }}
               >
-                PO-FC-Bill-To Master
+                {/* PO-FC-Bill-To Master */}
               </h5>
             </div>
             <div>

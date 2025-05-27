@@ -1,0 +1,127 @@
+.login-bg {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e0f5ff 0%, #b3e0ff 100%);
+}
+
+.login-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 600px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.login-container {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.12);
+  padding: 25px 36px 32px 36px;
+  width: 450px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.3s;
+  animation: login-fade-in-up 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.login-title {
+  color: rgb(0, 2, 15);
+  margin-bottom: -1rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 2.3rem;      
+  font-weight: bold; 
+  text-shadow: 3px 3px 6px #e0f5fffe;    
+  letter-spacing: 2px;         
+  /* text-align: center; */
+  /* text-transform: uppercase;      */
+}
+
+.login-logo-main {
+  width: 400px;
+  /* margin: 10; */
+  /* margin-bottom: -1rem; */
+  /* margin: 0 auto -30px auto; */
+}
+
+.login-logo {
+  transform: translate(7.4rem, -50px);
+  width: 120px;
+  /* margin: 10; */
+  margin-bottom: -3rem;
+  /* margin: 0 auto -30px auto; */
+}
+
+.login-subtitle {
+  color: #1976d2;
+  font-size: 0.75rem;           
+  font-weight: 600;
+  margin-bottom: 32px;
+  letter-spacing: 2px;          
+  text-align: center;
+  text-shadow: 0 1px 8px #e0f5ff;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  text-transform: uppercase;    
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.MuiTextField-root {
+  width: 100%;
+}
+
+/* ปรับตรงนี้! ให้ style ปุ่ม login มีผลเฉพาะใน login-container */
+.login-container .MuiButton-root {
+  width: 100%;
+  height: 46px;
+  font-size: 1.08rem;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: #1976d2;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px 0 rgba(25, 118, 210, 0.10);
+}
+
+.login-container .MuiButton-root:hover {
+  background: #125ea2;
+}
+
+@media (max-width: 500px) {
+  .login-container {
+    width: 98vw;
+    padding: 24px 8px;
+  }
+}
+
+@keyframes login-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* .MuiFormLabel-asterisk {
+  display: none;
+} */
+ 

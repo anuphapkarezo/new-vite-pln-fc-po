@@ -7,6 +7,8 @@ import axios from "axios";
 import Nav from "../components/Nav";
 
 export default function Process_STD_Leasdtime_Master({ onSearch }) {
+  localStorage.setItem('page_name', 'Process Standard Leadtime');
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [distinctProcSTDLeadtime, setDistinctProcSTDLeadtime] = useState([]);
@@ -91,7 +93,8 @@ export default function Process_STD_Leasdtime_Master({ onSearch }) {
                   paddingLeft: "5px",
                   marginLeft: 20
                   }}>
-                  Process Standard Leadtime</p>
+                  {/* Process Standard Leadtime */}
+              </p>
               <Box sx={{ width: 810 ,  height: 570 , marginLeft: 3}}>
                   <DataGrid
                       columns={columns}

@@ -181,6 +181,10 @@ export default function Nav() {
   const userGuestObject = JSON.parse(userGuest);
   const userGuestRole = userGuestObject?.user_role;
 
+  const pageName = localStorage.getItem("page_name");
+  // console.log('pageName' , pageName);
+  
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -210,7 +214,7 @@ export default function Nav() {
                 fontWeight: "bold",
               }}
             >
-              Smart Planning Development
+              Smart Planning Development : {pageName}
             </Typography>
 
             <IconButton

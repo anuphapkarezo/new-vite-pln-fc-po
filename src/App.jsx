@@ -15,13 +15,16 @@ import ProtectedRoutes from "./components/auths/ProtectedRoutes";
 import Planning_Product_Price_Analysis from "./pages/Planning_Product_Price_Analysis";
 import Planning_PO_FC_bill_to from "./pages/Planning_PO_FC_bill_to";
 import Planning_Product_Master from "./pages/Planning_Product_Master";
+import LoginNew from "./pages/LoginNew";
+import Planning_Product_MultiLayer_Control from "./pages/Planning_Product_MultiLayer_Control";
 
 export default function App() {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<LoginNew />} />
+        <Route path="/login" element={<LoginNew />} />
+        
 
         {/* Protect */}
         <Route element={<ProtectedRoutes />}>
@@ -37,6 +40,7 @@ export default function App() {
           <Route path="/pln_prod_price_analysis" element={<Planning_Product_Price_Analysis />}/>
           <Route path="/pln_po_fc_bill_to_master" element={<Planning_PO_FC_bill_to />}/>
           <Route path="/pln_product_master" element={<Planning_Product_Master />}/>
+          <Route path="/pln_product_multilayer_control" element={<Planning_Product_MultiLayer_Control />}/>
         </Route>
         {/* Protect */}
       </Routes>

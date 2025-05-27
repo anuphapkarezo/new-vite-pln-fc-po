@@ -23,6 +23,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 
 export default function Planning_Manage_Machine_In_Process({ onSearch }) {
+  localStorage.setItem('page_name', 'Machine in Process Management');
+
   const [selectedFactory, setSelectedFactory] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [selectedGroupProcess, setSelectedGroupProcess] = useState(null);

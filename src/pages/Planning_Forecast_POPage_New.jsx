@@ -27,6 +27,8 @@ import Container from "@mui/material/Container";
 // import { Container } from "@mui/material";
 
 export default function Planning_Forecast_POPage_New({ onSearch }) {
+  localStorage.setItem('page_name', 'Forecast Vs PO');
+
   const getJson = (apiRef) => {
     // Select rows and columns
     const filteredSortedRowIds = gridFilteredSortedRowIdsSelector(apiRef);

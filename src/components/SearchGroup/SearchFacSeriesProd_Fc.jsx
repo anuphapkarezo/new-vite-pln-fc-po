@@ -105,7 +105,6 @@ function SearchFacSeriesProd_Fc({ onSearch }) {
             marginBottom: "20px",
           }}
         >
-          Plannig : Forecast Vs PO
         </h5>
       </div>
       <Box maxWidth="xl" sx={{ width: "100%", height: 50 }}>

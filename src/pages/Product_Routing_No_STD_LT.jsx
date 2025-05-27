@@ -7,6 +7,8 @@ import axios from "axios";
 import Nav from "../components/Nav";
 
 export default function Product_Routing_No_STD_LT({ onSearch }) {
+  localStorage.setItem('page_name', 'Product Routing no standard Leadtime');
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [distinctProdRoutNoSTD_LT, setDistinctProdRoutNoSTD_LT] = useState([]);
@@ -108,7 +110,8 @@ export default function Product_Routing_No_STD_LT({ onSearch }) {
                   paddingLeft: "5px",
                   marginLeft: 20
                   }}>
-                  Product Routing no standard Leadtime</p>
+                  {/* Product Routing no standard Leadtime */}
+                  </p>
               <Box sx={{ width: 1440 ,  height: 570 , marginLeft: 3}}>
                     <DataGrid
                       columns={columns}

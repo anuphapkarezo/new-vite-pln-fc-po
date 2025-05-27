@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 import ReactApexChart from 'react-apexcharts';
 
 export default function Planning_Product_Price_Analysis({ onSearch }) {
+  localStorage.setItem('page_name', 'Product Pricing Summary & Analysis Data');
+  
   const [isError, setIsError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 

@@ -11,6 +11,8 @@ import SearchForecastTime_Cap_Chart from "../components/SearchGroup/SearchForeca
 import './styles/Planning_Forecast_time_Capacity_Chart.css'; // Import the CSS file
 
 export default function Planning_Forecast_time_Capacity_Chart({ onSearch }) {
+  localStorage.setItem('page_name', 'Forecast time & Capacity level by process [Chart]');
+  
   const [selectedFC_Period, setSelectedFC_Period] = useState(null);
   const [selectedFactory, setSelectedFactory] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);

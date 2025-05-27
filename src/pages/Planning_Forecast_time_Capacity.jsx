@@ -13,6 +13,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 
 export default function Planning_Forecast_time_Capacity({ onSearch }) {
+  localStorage.setItem('page_name', 'Forecast time & Capacity level by process');
+
   const [selectedFC_Period, setSelectedFC_Period] = useState(null);
   const [selectedFactory, setSelectedFactory] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState(null);

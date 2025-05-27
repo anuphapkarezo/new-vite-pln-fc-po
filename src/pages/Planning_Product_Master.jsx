@@ -20,6 +20,8 @@ import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
 export default function Planning_Product_Master({ onSearch }) {
+  localStorage.setItem('page_name', 'Product Master Report');
+
   const Custom_Progress = () => (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
     <div className="loader"></div>
@@ -239,7 +241,7 @@ export default function Planning_Product_Master({ onSearch }) {
       <div className="background-container">
           <Box>
             <Nav/>
-            <div>
+            {/* <div>
               <h5
                 style={{
                   fontSize: 20,
@@ -254,8 +256,8 @@ export default function Planning_Product_Master({ onSearch }) {
               >
                 Product Master Report
               </h5>
-            </div>
-            <div style={{width: 1050 , display: "flex", flexDirection: "row",}}>
+            </div> */}
+            <div style={{width: 1050 , display: "flex", flexDirection: "row", marginTop: 40}}>
                 {/* <label htmlFor="">From Product :</label> */}
                 <Autocomplete
                   disablePortal

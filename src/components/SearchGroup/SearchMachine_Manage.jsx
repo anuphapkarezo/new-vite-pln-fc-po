@@ -125,7 +125,7 @@ function SearchMachine_Manage({ onSearch }) {
             // backgroundColor: '#CAE6B2',
           }}
         >
-          Machine in Process Management
+          {/* Machine in Process Management */}
         </h5>
       </div>
       <Box maxWidth="xl" sx={{ width: "100%", height: 50 }}>

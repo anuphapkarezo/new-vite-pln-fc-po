@@ -578,6 +578,8 @@ const columns = [
 ];
 
 export default function Planning_Forecast_AnalysisPage({ onSearch }) {
+  localStorage.setItem('page_name', 'Forecast Analysis');
+
   const [filterModel, setFilterModel] = React.useState({
     items: [],
     quickFilterExcludeHiddenColumns: true,
