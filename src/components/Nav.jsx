@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 // import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 // import Nav from "../components/Nav";
 // import AnalyticEcommerce from "./components/cards/statistics/AnalyticEcommerce";DataChartPage
@@ -181,7 +181,12 @@ export default function Nav() {
   const userGuestObject = JSON.parse(userGuest);
   const userGuestRole = userGuestObject?.user_role;
 
-  const pageName = localStorage.getItem("page_name");
+  let pageName = localStorage.getItem("page_name");
+  if (location.pathname === "/home") {
+    pageName = "Smart Planning Development";
+  } else {
+    pageName = "Smart Planning Development : " + pageName;
+  }
   // console.log('pageName' , pageName);
   
 
@@ -214,7 +219,7 @@ export default function Nav() {
                 fontWeight: "bold",
               }}
             >
-              Smart Planning Development : {pageName}
+              {pageName}
             </Typography>
 
             <IconButton
@@ -263,7 +268,7 @@ export default function Nav() {
           </DrawerHeader>
           <Divider />
           <Divider />
-          <MenuList open={open} /> {/* Pass the `open` prop to MenuList */}
+          <MenuList open={open} setOpen={setOpen} /> {/* Pass the `open` prop to MenuList */}
         </Drawer>
       </Box>
     </>

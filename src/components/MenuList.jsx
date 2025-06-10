@@ -37,8 +37,11 @@ import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
+import AppRegistrationTwoToneIcon from '@mui/icons-material/AppRegistrationTwoTone';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 
-const MenuList = ({ open }) => {
+const MenuList = ({ open, setOpen  }) => {
   //bind value user from localstorage
   const userString = localStorage.getItem("userToken");
   const userObject = JSON.parse(userString);
@@ -54,31 +57,62 @@ const MenuList = ({ open }) => {
   const [openFC, setOpenFC] = useState(false);
   const handleOpenFCClick = () => {
     setOpenFC(!openFC);
+    if (openFC === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   };
 
   const [openCap, setOpenCap] = useState(false);
   const handleOpenCapClick = () => {
     setOpenCap(!openCap);
+    if (openCap === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   };  
 
   const [openLT, setOpenLT] = useState(false);
   const handleOpenLTClick = () => {
     setOpenLT(!openLT);
+    if (openLT === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   }; 
 
   const [openPrice, setOpenPrice] = useState(false);
   const handleOpenPriceClick = () => {
     setOpenPrice(!openPrice);
+    if (openPrice === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   }; 
 
   const [openMaster, setOpenMaster] = useState(false);
   const handleOpenMasterClick = () => {
     setOpenMaster(!openMaster);
+    if (openMaster === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   }; 
 
   const [openOuter, setOpenOuter] = useState(false);
+  const [chkOuter, setchkOuter] = useState(0);
   const handleOpenOuterClick = () => {
     setOpenOuter(!openOuter);
+    if (openOuter === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   }; 
   
   return (
@@ -669,23 +703,6 @@ const MenuList = ({ open }) => {
             </ListItemButton>
           </ListItem>
         </List>
-
-        {/* <List component="div" disablePadding>
-          <ListItem
-            onClick={countUsageAnalysis}
-            disablePadding
-            component={Link}
-            to="/pln_product_master"
-            sx={{ pl: 2 }}
-          >
-            <ListItemButton>
-              <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
-                <FolderCopyTwoToneIcon />
-              </ListItemIcon>
-              <ListItemText primary="PRD Outer Control" />
-            </ListItemButton>
-          </ListItem>
-        </List> */}
       </Collapse>
 
       {/* ------------------------------Outer Dashboard------------------------------ */}
@@ -697,19 +714,71 @@ const MenuList = ({ open }) => {
         {openOuter ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={openOuter} timeout="auto" unmountOnExit>
+      
         <List component="div" disablePadding>
           <ListItem
             onClick={countUsageAnalysis}
             disablePadding
             component={Link}
-            to="/pln_product_multilayer_control"
+            to="/pln_pmc_select_product_to_master_header"
+            sx={{ pl: 2 }}
+          >
+            <ListItemButton>
+              <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
+                <AppRegistrationTwoToneIcon />
+              </ListItemIcon>
+              <ListItemText primary="Select Master" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        
+        <List component="div" disablePadding>
+          <ListItem
+            onClick={countUsageAnalysis}
+            disablePadding
+            component={Link}
+            to="/pln_pmc_fg_stock_production"
+            sx={{ pl: 2 }}
+          >
+            <ListItemButton>
+              <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
+                <InventoryIcon />
+              </ListItemIcon>
+              <ListItemText primary="Stock Outer" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <List component="div" disablePadding>
+          <ListItem
+            onClick={countUsageAnalysis}
+            disablePadding
+            component={Link}
+            to="/pln_monthly_plan_product"
+            sx={{ pl: 2 }}
+          >
+            <ListItemButton>
+              <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
+                <DateRangeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Monthly Plan" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <List component="div" disablePadding>
+          <ListItem
+            onClick={countUsageAnalysis}
+            disablePadding
+            component={Link}
+            to="/pln_pmc_product_multilayer_control"
             sx={{ pl: 2 }}
           >
             <ListItemButton>
               <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
                 <DynamicFeedIcon />
               </ListItemIcon>
-              <ListItemText primary="Outer Control" />
+              <ListItemText primary="PRD Multi Control" />
             </ListItemButton>
           </ListItem>
         </List>

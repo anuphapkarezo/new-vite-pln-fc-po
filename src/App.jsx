@@ -16,7 +16,11 @@ import Planning_Product_Price_Analysis from "./pages/Planning_Product_Price_Anal
 import Planning_PO_FC_bill_to from "./pages/Planning_PO_FC_bill_to";
 import Planning_Product_Master from "./pages/Planning_Product_Master";
 import LoginNew from "./pages/LoginNew";
-import Planning_Product_MultiLayer_Control from "./pages/Planning_Product_MultiLayer_Control";
+import Planning_Product_MultiLayer_Control from "./pages/zPMC_Planning_Product_MultiLayer_Control";
+import PMC_Select_Product_To_Master_Header from "./pages/zPMC_Select_Product_To_Master_Header";
+import PMC_Fg_Stock_Production from "./pages/zPMC_Fg_Stock_Production";
+import PMC_Plan_per_day from "./pages/zPMC_Plan_per_day";
+import Planning_Monthly_Plan_Product from "./pages/Planning_Monthly_Plan_Product";
 
 export default function App() {
   return (
@@ -40,7 +44,11 @@ export default function App() {
           <Route path="/pln_prod_price_analysis" element={<Planning_Product_Price_Analysis />}/>
           <Route path="/pln_po_fc_bill_to_master" element={<Planning_PO_FC_bill_to />}/>
           <Route path="/pln_product_master" element={<Planning_Product_Master />}/>
-          <Route path="/pln_product_multilayer_control" element={<Planning_Product_MultiLayer_Control />}/>
+          <Route path="/pln_pmc_product_multilayer_control" element={<Planning_Product_MultiLayer_Control />}/>
+          <Route path="/pln_pmc_select_product_to_master_header" element={<PMC_Select_Product_To_Master_Header />}/>
+          <Route path="/pln_pmc_fg_stock_production" element={<PMC_Fg_Stock_Production />}/>
+          <Route path="/pln_pmc_plan_per_day" element={<PMC_Plan_per_day />}/>
+          <Route path="/pln_monthly_plan_product" element={<Planning_Monthly_Plan_Product />}/>
         </Route>
         {/* Protect */}
       </Routes>
