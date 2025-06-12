@@ -532,34 +532,45 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
 
   // ฟังก์ชันหาค่า sum_lot ของแต่ละ product ตามเงื่อนไข
   const getTotalWIPSum = (row, distinctProcess) => {
-    // หา index ของ Total WIP ในหัวตาราง
+    // หา index ของ Total WIP และ FG OUTER ในหัวตาราง
     const totalWipIdx = distinctProcess.findIndex(p => p.proc_disp === "Total WIP");
+    const fgOuterIdx = distinctProcess.findIndex(p => p.proc_disp === "FG OUTER");
     if (totalWipIdx === -1) return null;
+
+    let sum = 0;
 
     // เงื่อนไข SUB + sort_no=2
     if (row.prd_type === "SUB") {
-      // process ที่ตรงกับหัวตารางและ sort_no=2
-      return row.process.reduce((sum, proc, idx) => {
+      sum = row.process.reduce((acc, proc, idx) => {
         const procHead = distinctProcess[idx];
         if (procHead && procHead.sort_no === 2 && procHead.proc_disp === proc.proc_disp) {
           const val = Number(proc.sum_lot);
-          return sum + (isNaN(val) ? 0 : val);
+          return acc + (isNaN(val) ? 0 : val);
         }
-        return sum;
+        return acc;
       }, 0);
     }
     // เงื่อนไข MAIN + sort_no=3
-    if (row.prd_type === "MAIN") {
-      return row.process.reduce((sum, proc, idx) => {
+    else if (row.prd_type === "MAIN") {
+      sum = row.process.reduce((acc, proc, idx) => {
         const procHead = distinctProcess[idx];
         if (procHead && procHead.sort_no === 3 && procHead.proc_disp === proc.proc_disp) {
           const val = Number(proc.sum_lot);
-          return sum + (isNaN(val) ? 0 : val);
+          return acc + (isNaN(val) ? 0 : val);
         }
-        return sum;
+        return acc;
       }, 0);
     }
-    return null;
+
+    // เพิ่ม FG OUTER เข้าไป (ถ้ามี)
+    if (fgOuterIdx !== -1) {
+      const fgOuterVal = Number(row.process[fgOuterIdx]?.sum_lot);
+      if (!isNaN(fgOuterVal)) {
+        sum += fgOuterVal;
+      }
+    }
+
+    return sum === 0 ? null : sum;
   };
 
   const handleSave = async (prd_name) => {
