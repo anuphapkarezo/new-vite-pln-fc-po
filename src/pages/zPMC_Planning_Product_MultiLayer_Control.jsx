@@ -666,14 +666,14 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
               {isLoading ? (
                   <Custom_Progress />
               ) : (
-                <table style={{width: 3500, borderCollapse: 'collapse',}}>
+                <table style={{width: 4000, borderCollapse: 'collapse',}}>
                 <thead style={{fontSize: 16, position: 'sticky',top: 0, zIndex: 1, }}>
                   <tr>
                     <th
                         style={{
                         textAlign: "center",
                         backgroundColor: "#4E31AA",
-                        width: "120px",
+                        width: "160px",
                         border: 'solid black 1px',
                         color: 'white',
                         position: "sticky",
