@@ -48,11 +48,6 @@ const MenuList = ({ open, setOpen  }) => {
   const userName = userObject?.user_name;
   const userSurname = userObject?.user_surname;
   const userRole = userObject?.role_no ;
-  const ShortSurname = userSurname?.charAt(0);
-  const update_by = userName +'.'+ ShortSurname; 
-  userObject.update_by = update_by;
-  const UpperUpdate_By = userObject?.update_by?.toUpperCase();
-  // console.log('UpperUpdate_By' , UpperUpdate_By);
   // console.log('userRole' , userRole);
 
   const userGuest = localStorage.getItem("guestToken");
@@ -720,7 +715,7 @@ const MenuList = ({ open, setOpen  }) => {
       </ListItemButton>
       <Collapse in={openOuter} timeout="auto" unmountOnExit>
       
-        {userGuestRole !== 'Guest' && userRole === 1 || userRole === 2 && (
+        {(userRole === 1 || userRole === 2) && (
           <List component="div" disablePadding>
             <ListItem
               onClick={countUsageAnalysis}
