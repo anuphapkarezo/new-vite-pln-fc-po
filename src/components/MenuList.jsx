@@ -48,6 +48,11 @@ const MenuList = ({ open, setOpen  }) => {
   const userName = userObject?.user_name;
   const userSurname = userObject?.user_surname;
   const userRole = userObject?.role_no ;
+  const ShortSurname = userSurname?.charAt(0);
+  const update_by = userName +'.'+ ShortSurname; 
+  userObject.update_by = update_by;
+  const UpperUpdate_By = userObject?.update_by?.toUpperCase();
+  // console.log('UpperUpdate_By' , UpperUpdate_By);
   // console.log('userRole' , userRole);
 
   const userGuest = localStorage.getItem("guestToken");
@@ -715,22 +720,24 @@ const MenuList = ({ open, setOpen  }) => {
       </ListItemButton>
       <Collapse in={openOuter} timeout="auto" unmountOnExit>
       
-        <List component="div" disablePadding>
-          <ListItem
-            onClick={countUsageAnalysis}
-            disablePadding
-            component={Link}
-            to="/pln_pmc_select_product_to_master_header"
-            sx={{ pl: 2 }}
-          >
-            <ListItemButton>
-              <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
-                <AppRegistrationTwoToneIcon />
-              </ListItemIcon>
-              <ListItemText primary="Select Master" />
-            </ListItemButton>
-          </ListItem>
-        </List>
+        {userGuestRole !== 'Guest' && userRole === 1 || userRole === 2 && (
+          <List component="div" disablePadding>
+            <ListItem
+              onClick={countUsageAnalysis}
+              disablePadding
+              component={Link}
+              to="/pln_pmc_select_product_to_master_header"
+              sx={{ pl: 2 }}
+            >
+              <ListItemButton>
+                <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
+                  <AppRegistrationTwoToneIcon />
+                </ListItemIcon>
+                <ListItemText primary="Select Master" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        )}
         
         <List component="div" disablePadding>
           <ListItem
