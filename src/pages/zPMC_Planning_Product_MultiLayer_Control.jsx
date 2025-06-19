@@ -74,7 +74,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "http://10.17.100.115:3001/api/smart_planning/PMC-filter-product-multi-layer-report"
+          "http://10.17.100.115:3001/api/smart_planning/PMC-filter-product-multi-layer-report-new"
         );
         const dataProduct = response.data;
         setDistinctReport(dataProduct);
