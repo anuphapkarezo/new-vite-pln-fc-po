@@ -72,8 +72,10 @@ export default function Planning_Monthly_Plan_Product({ onSearch }) {
 
   const [selectedFromProduct, setSelectedFromProduct] = useState(null);
   const [selectedToProduct, setSelectedToProduct] = useState(null);
+  const [selectedProcess, setSelectedProcess] = useState(null);
 
   const [distinctProduct, setDistinctProduct] = useState([]);
+  const [distinctProcess, setDistinctProcess] = useState([]);
   const [distinctMonthlyPlan, setDistinctMonthlyPlan] = useState([]);
 
   const fetchProduct = async () => {
@@ -87,34 +89,84 @@ export default function Planning_Monthly_Plan_Product({ onSearch }) {
       console.error(`Error fetching distinct data ProductList: ${error}`);
     }
   };
+  const fetchProcess = async () => {
+    try {
+      let fromPrd = '';
+      if (selectedFromProduct) {
+          fromPrd = selectedFromProduct?.prd_name;
+      } else {
+          fromPrd = 'ALL'
+      }
+
+      let toPrd = '';
+      if (selectedToProduct) {
+          toPrd = selectedToProduct?.prd_name;
+      } else {
+          toPrd = 'ALL'
+      }
+
+      const response = await axios.get(
+        `http://10.17.100.115:3001/api/smart_planning/PMC-filter-process-list-monthly-plan?from_prd=${fromPrd}&to_prd=${toPrd}`
+      );
+      const dataProduct = response.data;
+      setDistinctProcess(dataProduct);
+    } catch (error) {
+      console.error(`Error fetching distinct data ProductList: ${error}`);
+    }
+  };
   
   useEffect(() => {
     fetchProduct();
+    fetchProcess();
   }, [selectedFromProduct, selectedToProduct,]);
 
   const handleFromProductChange = (event, newValue) => {
     setSelectedFromProduct(newValue);
     setSelectedToProduct(newValue);
+    setSelectedProcess(null);
   };
   const handleToProductChange = (event, newValue) => {
     setSelectedToProduct(newValue);
   };
+  const handleProcessChange = (event, newValue) => {
+    setSelectedProcess(newValue);
+  };
 
   const handleSearch = async () => {
-    const fromPrd = selectedFromProduct?.prd_name?.trim() || '';
-    const toPrd = selectedToProduct?.prd_name?.trim() || '';
-    if (fromPrd === '' && toPrd === '') {
+    const fromPrd = selectedFromProduct?.prd_name?.trim() || 'ALL';
+    const toPrd = selectedToProduct?.prd_name?.trim() || 'ALL';
+    const proc_disp = selectedProcess?.process?.trim() || 'ALL';
+    const right1 = proc_disp.slice(-1);  // ดึง 1 ตัวอักษรสุดท้าย
+    const cleaned_proc_disp = right1 === '+' ? proc_disp.slice(0, -1) + '%2B' : proc_disp;
+    // console.log('cleaned_proc_disp',cleaned_proc_disp);
+    if (fromPrd === 'ALL' && toPrd === 'ALL' && cleaned_proc_disp === 'ALL') {
       Swal.fire({
         icon: 'warning',
         title: 'Warning !',
-        text: 'Please select FromProduct & ToProduct.',
+        text: 'Please select at least 1 choice.',
         confirmButtonColor: '#4E71FF',
       });
       return;
     }
+    
+    // if (fromPrd === '' && toPrd === '') {
+    //   Swal.fire({
+    //     icon: 'warning',
+    //     title: 'Warning !',
+    //     text: 'Please select FromProduct & ToProduct.',
+    //     confirmButtonColor: '#4E71FF',
+    //   });
+    //   return;
+    // }
+    // console.log('fromPrd' , fromPrd);
+    // console.log('toPrd' , toPrd);
+    // console.log('cleaned_proc_disp' , cleaned_proc_disp);
+
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://10.17.100.115:3001/api/smart_planning/PMC-filter-monthly-plan-product?fromPrd=${fromPrd}&toPrd=${toPrd}`);
+      const response = await axios.get(`http://10.17.100.115:3001/api/smart_planning/PMC-filter-monthly-plan-product?from_prd=${fromPrd}&to_prd=${toPrd}&proc_disp=${cleaned_proc_disp}`);
+      // console.log(`http://10.17.100.115:3001/api/smart_planning/PMC-filter-monthly-plan-product?fromPrd=${fromPrd}&toPrd=${toPrd}&proc_disp=${cleaned_proc_disp}`);
+
       const data  = response.data;
       // เพิ่มฟังก์ชันนี้ไว้ก่อน setDistinctMonthlyPlan
       const transformMonthlyPlan = (data) => {
@@ -150,6 +202,7 @@ export default function Planning_Monthly_Plan_Product({ onSearch }) {
     setDistinctMonthlyPlan([]);
     setSelectedFromProduct(null);
     setSelectedToProduct(null);
+    setSelectedProcess(null);
   };
 
   // ฟังก์ชันรวมข้อมูลที่ซ้ำกัน
@@ -323,7 +376,7 @@ export default function Planning_Monthly_Plan_Product({ onSearch }) {
       <div className="background-container">
           <Box>
             <Nav/>
-            <div style={{width: 1050 , display: "flex", flexDirection: "row", marginTop: 40}}>
+            <div style={{width: 1280 , display: "flex", flexDirection: "row", marginTop: 40}}>
               {/* <label htmlFor="">From Product :</label> */}
               <Autocomplete
                   disablePortal
@@ -357,6 +410,23 @@ export default function Planning_Monthly_Plan_Product({ onSearch }) {
                   )}
                   isOptionEqualToValue={(option, value) =>
                     option && value && option.prd_name === value.prd_name
+                  }
+              />
+              <Autocomplete
+                  disablePortal
+                  // freeSolo
+                  id="combo-box-demo-product"
+                  size="small"
+                  options={distinctProcess}
+                  getOptionLabel={(option) => option && option.process}
+                  value={selectedProcess}
+                  onChange={handleProcessChange}
+                  sx={{ width: 230, height: 50, marginLeft: 2, }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Process" />
+                  )}
+                  isOptionEqualToValue={(option, value) =>
+                    option && value && option.process === value.process
                   }
               />
               <Button 

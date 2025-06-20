@@ -393,7 +393,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
           if (
             planDayValue === undefined ||
             planDayValue === "" ||
-            planDayValue === "-" ||
+            planDayValue === "" || // show 0/-
             planDayValue === null
           ) {
             const planDayObj = distinctReport.find(
@@ -402,7 +402,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
             planDayValue = planDayObj ? planDayObj.sum_lot : "";
           }
           value = (planDayValue === 0 || planDayValue === "0" || planDayValue === "" || planDayValue === null || planDayValue === undefined || planDayValue === "-")
-            ? "-"
+            ? "" // show 0/-
             : planDayValue;
         }
 
@@ -426,7 +426,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
             : Number(planDayValue);
 
           if (row.prd_type === "MAIN") {
-            value = planDayNum > 0 ? planDayNum * 3 : "-";
+            value = planDayNum > 0 ? planDayNum * 3 : ""; // show 0/-
           } else if (row.prd_type === "SUB") {
             // หา MAIN ทุกตัวในกลุ่มเดียวกัน (sort_no เดียวกัน)
             const mainRows = tableData.filter(
@@ -456,22 +456,22 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
             if (mainTarget > 0) {
               value = subTotalWip - mainTarget;
             } else {
-              value = "-";
+              value = ""; // show 0/-
             }
           } else {
-            value = "-";
+            value = ""; // show 0/-
           }
         }
 
         // --- Total WIP ---
         else if (procDisp === "Total WIP") {
           const sum = getTotalWIPSum(row, distinctProcess);
-          value = (sum === null || sum === 0) ? "-" : sum;
+          value = (sum === null || sum === 0) ? "" : sum; // show 0/-
         }
 
         // --- เงื่อนไขทั่วไป ---
         else if (value === "" || value === null || value === undefined || value === "0" || value === 0) {
-          value = "-";
+          value = ""; // show 0/-
         }
 
         dataRow[procDisp] = value;
@@ -776,7 +776,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
                                 procDisp === "FG OUTER" && row.prd_type === "SUB" || procDisp === "Total WIP" ? "#00FF9C" : 
                                 procDisp === "FG OUTER" && row.prd_type === "MAIN" ? "#F5F5F5" : undefined;
 
-                            let displayValue = (proc.sum_lot === "0" || proc.sum_lot === 0 || proc.sum_lot === "" || proc.sum_lot == null || proc.sum_lot === undefined) ? "-" : proc.sum_lot;
+                            let displayValue = (proc.sum_lot === "0" || proc.sum_lot === 0 || proc.sum_lot === "" || proc.sum_lot == null || proc.sum_lot === undefined) ? "" : proc.sum_lot;  // show 0/-
 
                             // สำหรับ Total WIP
                             let totalWipValue = null;
@@ -830,7 +830,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
                                   />
                                 );
                               } else {
-                                displayValue = "-";
+                                displayValue = "";  // show 0/-
                               }
                             }
 
@@ -856,7 +856,7 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
                                 : Number(planDayValue);
 
                               if (row.prd_type === "MAIN") {
-                                displayValue = planDayNum > 0 ? planDayNum * 3 : "-";
+                                displayValue = planDayNum > 0 ? planDayNum * 3 : ""; // show 0/-
                                 isPositive = planDayNum * 3 > 0;
                               } else if (row.prd_type === "SUB") {
                                 // หา MAIN ทุกตัวในกลุ่มเดียวกัน (sort_no เดียวกัน)
@@ -888,11 +888,11 @@ export default function Planning_Product_MultiLayer_Control({ onSearch }) {
                                   displayValue = subTotalWip - mainTarget;
                                   isPositive = displayValue > 0;
                                 } else {
-                                  displayValue = "-";
+                                  displayValue = "";  // show 0/-
                                   isPositive = false;
                                 }
                               } else {
-                                displayValue = "-";
+                                displayValue = "";  // show 0/-
                                 isPositive = false;
                               }
                             }
