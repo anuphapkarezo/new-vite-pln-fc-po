@@ -7,11 +7,16 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import "./styles/LoginNew.css";
 import { Link } from "react-router-dom";
+import {IconButton, InputAdornment } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function LoginNew() {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [userLogin, setUserLogin] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -71,6 +76,14 @@ function LoginNew() {
     });
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="login-bg">
       <div className="login-container">
@@ -100,7 +113,7 @@ function LoginNew() {
             // placeholder="Password"
             variant="outlined"
             margin="normal"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
@@ -108,8 +121,20 @@ function LoginNew() {
             required
             InputProps={{
               sx: {
-                color: 'blue', // สีตัวอักษรภายในช่องกรอก
+                color: 'blue',
               },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
           // InputLabelProps={{
           //   sx: {
