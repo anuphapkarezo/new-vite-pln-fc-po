@@ -40,6 +40,7 @@ import CopyAllIcon from '@mui/icons-material/CopyAll';
 import AppRegistrationTwoToneIcon from '@mui/icons-material/AppRegistrationTwoTone';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import DateRangeIcon from '@mui/icons-material/DateRange';
+import SubjectIcon from '@mui/icons-material/Subject';
 
 const MenuList = ({ open, setOpen  }) => {
   //bind value user from localstorage
@@ -703,6 +704,24 @@ const MenuList = ({ open, setOpen  }) => {
             </ListItemButton>
           </ListItem>
         </List>
+
+        <List component="div" disablePadding>
+          <ListItem
+            onClick={countUsageAnalysis}
+            disablePadding
+            component={Link}
+            to="/pln_prod_rout_list"
+            sx={{ pl: 2 }}
+          >
+            <ListItemButton>
+              <ListItemIcon  sx={{ minWidth: 10, mr: 1 }}>
+                <SubjectIcon />
+              </ListItemIcon>
+              <ListItemText primary="Routing List" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        
       </Collapse>
 
       {/* ------------------------------Outer Dashboard------------------------------ */}

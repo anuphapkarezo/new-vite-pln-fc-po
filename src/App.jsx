@@ -21,6 +21,7 @@ import PMC_Select_Product_To_Master_Header from "./pages/zPMC_Select_Product_To_
 import PMC_Fg_Stock_Production from "./pages/zPMC_Fg_Stock_Production";
 import PMC_Plan_per_day from "./pages/zPMC_Plan_per_day";
 import Planning_Monthly_Plan_Product from "./pages/Planning_Monthly_Plan_Product";
+import Planning_Product_Routing_List from "./pages/Planning_Product_Routing_List";
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="/pln_pmc_fg_stock_production" element={<PMC_Fg_Stock_Production />}/>
           <Route path="/pln_pmc_plan_per_day" element={<PMC_Plan_per_day />}/>
           <Route path="/pln_monthly_plan_product" element={<Planning_Monthly_Plan_Product />}/>
+          <Route path="/pln_prod_rout_list" element={<Planning_Product_Routing_List />}/>
         </Route>
         {/* Protect */}
       </Routes>
