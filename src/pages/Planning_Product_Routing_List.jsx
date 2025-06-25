@@ -20,7 +20,7 @@ import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
 export default function Planning_Product_Routing_List({ onSearch }) {
-  localStorage.setItem('page_name', 'Product Master Report');
+  localStorage.setItem('page_name', 'Product Routing List');
 
   const Custom_Progress = () => (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
